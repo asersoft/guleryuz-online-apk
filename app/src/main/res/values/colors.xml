@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3f51b5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="web20c1">#0995d3</color>
+    <color name="web20c2">#76de3f</color>
+    <color name="web20c3">#febd63</color>
+    <color name="web20c4">#d06e7d</color>
+    <color name="web20c5">#ffa474</color>
+    <color name="web20c6">#69D2E7</color>
+    <color name="web20c7">#FA6900</color>
+    <color name="web20c8">#67c70f</color>
+    <color name="web20c9">#a7d707</color>
+    <color name="waitNsent">#5f9737</color>
+    <color name="network">#4be240</color>
+    <color name="mainfooter">#e0e4cc</color>
+</resources>

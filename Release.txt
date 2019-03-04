@@ -1,0 +1,6 @@
+version: 6.2
+Date: 09.04.2017
+- Delete all files and data for other users
+- Move all photos and images to .Guleryuz folder on SDCard
+- Threading is used for Download photos.(increase performance)
+- 

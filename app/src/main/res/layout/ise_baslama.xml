@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layoutIBas"
+        android:orientation="vertical">
+    <!-- Header aligned to top -->
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:background="@color/web20c3"
+            android:text="@string/isebaslama"/>
+    </RelativeLayout>
+
+    <!-- Footer aligned to bottom -->
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/border_set"
+        android:gravity="center" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
+
+            <Button android:id="@+id/ibasBtnIptal"
+                android:gravity="center_horizontal"
+                android:text="@string/ibasiptal"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginBottom="5dp"></Button>
+
+            <Button android:id="@+id/ibasBtnCalismaYok"
+                android:gravity="center_horizontal"
+                android:text="@string/ibascalismayok"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginBottom="5dp"></Button>
+
+            <Button android:id="@+id/ibasBtnSonraki"
+                android:gravity="center_horizontal"
+                android:text="@string/ibassonraki"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"></Button>
+        </LinearLayout>
+    </RelativeLayout>
+    <ScrollView
+        android:id="@+id/scrollableContents"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/footer"
+        android:layout_below="@id/header" >
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:background="@drawable/border_set"
+                android:gravity="center_vertical"
+                android:layout_height="@dimen/ibasRowH">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:text="@string/ibastarih"
+                    android:layout_height="match_parent" />
+                <TextView android:id="@+id/ibastarih"
+                    android:gravity="left|center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="?attr/actionMenuTextColor"
+                    android:textStyle="normal|bold"
+                    android:paddingLeft="7dp"></TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:background="@drawable/border_set"
+                android:gravity="center_vertical"
+                android:layout_height="@dimen/ibasRowH">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:text="@string/ibasfirma"
+                    android:layout_height="match_parent" />
+                <Spinner android:id="@+id/ibasfirma"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></Spinner>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:background="@drawable/border_set"
+                android:gravity="center_vertical"
+                android:layout_height="@dimen/ibasRowH">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/ibasbolge"/>
+                <Spinner android:id="@+id/ibasbolge"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></Spinner>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:background="@drawable/border_set"
+                android:gravity="center_vertical"
+                android:layout_height="@dimen/ibasRowH">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:text="@string/ibascalisma"
+                    android:layout_height="match_parent" />
+                <Spinner android:id="@+id/ibascalisma"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></Spinner>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:background="@drawable/border_set"
+                android:gravity="center_vertical"
+                android:layout_height="@dimen/ibasRowH">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:text="@string/ibasyetkili"
+                    android:layout_height="match_parent" />
+                <Spinner android:id="@+id/ibasyetkili"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></Spinner>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ibasTarlaUrun"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:background="@drawable/border_set"
+                android:layout_height="@dimen/ibasRowH"
+                android:visibility="gone">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/ibasurun"/>
+                <Spinner
+                    android:id="@+id/ibasurun"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></Spinner>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:background="@drawable/border_set"
+                android:gravity="center_vertical"
+                android:layout_height="@dimen/ibasRowH">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:text="@string/ibasekiplideri"
+                    android:layout_height="match_parent" />
+                <Spinner android:id="@+id/ibasekiplideri"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></Spinner>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    </RelativeLayout>

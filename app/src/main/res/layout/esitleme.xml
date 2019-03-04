@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/layoutSync"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:background="@color/web20c5"
+        android:text="@string/syncdata"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/border_syncdata"
+        android:layout_height="40dp">
+        <TextView
+            android:paddingLeft="3dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:text="@string/sdfromserver"
+            android:textStyle="normal|bold"
+            android:layout_height="35dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/border_syncdata"
+        android:gravity="center_vertical"
+        android:layout_height="45dp">
+        <TextView
+            android:paddingLeft="3dp"
+            android:gravity="center_vertical"
+            android:text="@string/sdfromservertime"
+            android:layout_width="200dp"
+            android:layout_height="match_parent" />
+        <TextView android:id="@+id/txtSDFromServerTime"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/border_syncdata"
+        android:gravity="center_vertical"
+        android:layout_height="50dp">
+
+        <Button
+            android:text="@string/sdsyncfromserver"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnSDFromSync"
+            android:layout_weight="1"
+            android:layout_margin="5dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:background="@drawable/border_syncdata"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/border_syncdata"
+        android:gravity="center_vertical"
+        android:layout_height="40dp">
+        <TextView
+            android:paddingLeft="3dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:text="@string/sdtoserver"
+            android:textStyle="normal|bold"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/border_syncdata"
+        android:gravity="center_vertical"
+        android:layout_height="45dp">
+        <TextView
+            android:id="@+id/txtSDToServerInfo"
+            android:paddingLeft="3dp"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/border_syncdata"
+        android:gravity="center_vertical"
+        android:layout_height="45dp">
+        <TextView
+            android:paddingLeft="3dp"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:text="@string/sdtoservertimeputantaj"
+            android:layout_width="200dp" />
+        <TextView android:id="@+id/txtSDToServerTimePuantaj"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" ></TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/border_syncdata"
+        android:gravity="center_vertical"
+        android:layout_height="45dp">
+        <TextView
+            android:paddingLeft="3dp"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:text="@string/sdtoservertimepersonel"
+            android:layout_width="200dp" />
+        <TextView android:id="@+id/txtSDToServerTimePersonel"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" ></TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/border_syncdata"
+        android:layout_height="50dp">
+        <Button
+            android:text="@string/sdsyncpersonel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnSDToSyncPersonel"
+            android:layout_weight="1"
+            android:layout_margin="5dp" />
+        <Button
+            android:text="@string/sdsyncpuantaj"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnSDToSyncPuantaj"
+            android:layout_weight="1"
+            android:layout_margin="5dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@drawable/border_syncdata"
+        android:layout_height="50dp">
+        <Button
+            android:text="@string/sdsync"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnSDToSyncTumu"
+            android:layout_weight="1"
+            android:layout_margin="5dp" />
+    </LinearLayout>
+</LinearLayout>

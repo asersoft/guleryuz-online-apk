@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/layoutIBas2"
+    android:orientation="vertical">
+
+    <!-- Header aligned to top -->
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:background="@color/web20c3"
+            android:text="@string/isebaslama4"/>
+    </RelativeLayout>
+
+    <!-- Footer aligned to bottom -->
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/border_set"
+        android:gravity="center" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
+
+            <Button android:id="@+id/ibasBtnIptal"
+                android:gravity="center_horizontal"
+                android:text="@string/ibasiptal"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginBottom="5dp"></Button>
+
+            <Button android:id="@+id/ibasBtnSonraki"
+                android:gravity="center_horizontal"
+                android:text="@string/ibascomplete"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"></Button>
+        </LinearLayout>
+    </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/footer"
+        android:layout_below="@id/header">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:background="@drawable/border_set"
+                android:layout_height="@dimen/ibasRowH"
+                android:gravity="center_vertical">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:text="@string/ibasfisno"
+                    android:layout_height="match_parent" />
+                <EditText android:id="@+id/ibasfisno"
+                    android:layout_width="match_parent"
+                    android:textSize="15dp"
+                    android:layout_height="match_parent"
+                    android:singleLine="true"></EditText>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal"
+                android:background="@drawable/border_set">
+
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_height="30dp"
+                    android:text="@string/ibas3kontrol1"
+                    android:layout_width="170dp" />
+                <ImageView
+                    android:id="@+id/ibasek1del"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp">
+                </ImageView>
+                <Button
+                    android:text="@string/ibas3ekle"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnIbas3Kontrol1"
+                    android:layout_weight="1" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:background="@drawable/border_set"
+                android:gravity="center"
+                android:layout_height="65dp">
+                <ImageView
+                    android:id="@+id/ibas3Image1"
+                    android:layout_width="120dp"
+                    android:layout_height="60dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal"
+                android:background="@drawable/border_set">
+
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_height="30dp"
+                    android:text="@string/ibas3kontrol2"
+                    android:layout_width="170dp" />
+                <ImageView
+                    android:id="@+id/ibasek2del"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp">
+                </ImageView>
+                <Button
+                    android:text="@string/ibas3ekle"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnIbas3Kontrol2"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:background="@drawable/border_set"
+                android:gravity="center"
+                android:layout_height="65dp">
+                <ImageView
+                    android:id="@+id/ibas3Image2"
+                    android:layout_width="120dp"
+                    android:layout_height="60dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal"
+                android:background="@drawable/border_set">
+
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_height="30dp"
+                    android:text="@string/ibas3kontrol3"
+                    android:layout_width="170dp" />
+
+                <ImageView
+                    android:id="@+id/ibasek3del"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp">
+                </ImageView>
+                <Button
+                    android:text="@string/ibas3ekle"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnIbas3Kontrol3"
+                    android:layout_weight="1" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:background="@drawable/border_set"
+                android:layout_height="65dp"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/ibas3Image3"
+                    android:layout_width="120dp"
+                    android:layout_height="60dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal"
+                android:background="@drawable/border_set">
+
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="200dp"
+                    android:layout_height="30dp"
+                    android:text="@string/ibas3aciklama"
+                    android:layout_weight="1" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:background="@drawable/border_set"
+                android:layout_height="65dp">
+                <EditText android:id="@+id/ibas4Aciklama"
+                    android:layout_width="match_parent"
+                    android:textSize="15dp"
+                    android:layout_height="match_parent"
+                    android:lines="5"
+                    android:minLines="5"
+                    android:scrollbars="vertical"></EditText>
+            </LinearLayout>
+        </LinearLayout>
+        </ScrollView>
+</RelativeLayout>

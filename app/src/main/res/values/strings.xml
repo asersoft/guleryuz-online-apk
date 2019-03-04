@@ -1,0 +1,129 @@
+<resources>
+    <string name="app_name">Güleryüz Puantaj Takibi</string>
+    <string name="home">Ana Sayfa</string>
+    <string name="sorgula">Personel Sorgula</string>
+    <string name="gunlukpuantaj">Puantaj Listeleme</string>
+    <string name="isebaslama">Günlük Puantaj</string>
+    <string name="isbitirme">Listeleme</string>
+    <string name="syncdata">Verileri Gönder/Al</string>
+    <string name="username">Kullanıcı</string>
+    <string name="pass">Şifre</string>
+    <string name="login">Giriş</string>
+    <string name="sifremihatirla">Şifremi Hatırla</string>
+    <string name="sifremiunuttum">Şifremi Unuttum</string>
+    <string name="personelEkle">Personel Ekle</string>
+    <string name="bilgileriGonder">Bilgileri Gönder</string>
+    <string name="bilgileriAl">Bilgileri Al</string>
+    <string name="bekleyenler">Bekleyenler</string>
+    <string name="gonderilenler">Gönderilenler</string>
+    <string name="kaydet">Kaydet</string>
+
+    <string name="ibasbolge">Bölge</string>
+    <string name="ibascalisma">Çalışma Alanı</string>
+    <string name="ibasfirma">Firma</string>
+    <string name="ibasyetkili">Yetkili</string>
+    <string name="ibasekiplideri">Ekip Lideri</string>
+    <string name="ibastarih">Tarih</string>
+    <string name="ibasfisno">Fiş No</string>
+    <string name="ibassayitakipformu">STF</string>
+
+    <string name="ibassonraki">Devam</string>
+    <string name="ibasonceki">Önceki</string>
+    <string name="ibasiptal">İptal</string>
+    <string name="ibascomplete">Tamamla</string>
+    <string name="ibascalismayok">Çalışma Yok</string>
+
+    <string name="ibasgorevekle">Görev Ekle</string>
+    <string name="ibasekle">Ekle</string>
+    <string name="ibasservistur">Tür</string>
+    <string name="ibasservis">Tür     Servis</string>
+    <string name="ibasservissayisi">Servis Sayısı</string>
+    <string name="ibaskapat">Kapat</string>
+    <string name="ibasbayan">B:</string>
+    <string name="ibaserkek">E:</string>
+    <string name="ibastoplam">T:</string>
+    <string name="ibasmesai">M:</string>
+    <string name="ibasurun">Tarla/Ürün</string>
+    <string name="ibasgorev">Görev</string>
+    <string name="ibasbarkod">Sicil No</string>
+    <string name="ibasbarkodoku">Sorgula</string>
+    <string name="ibasbarkodyeni">Yeni Sorgu</string>
+    <string name="ibaspersonel">Personel</string>
+    <string name="ibastc">TC</string>
+    <string name="ibascinsiyet">Cinsiyet</string>
+    <string name="ibasonay">ONAYLA</string>
+
+    <string name="ibasislem">İşlem</string>
+
+    <string name="isebaslama2">Günlük Puantaj - Görev</string>
+
+    <string name="isebaslama3">Günlük Puantaj - Servis</string>
+
+
+
+    <string name="isebaslama4">Günlük Puantaj - Dokuman</string>
+    <string name="ibas3kontrol1">Ekip Lideri Sayı Kontrol 1</string>
+    <string name="ibas3kontrol2">Ekip Lideri Sayı Kontrol 2</string>
+    <string name="ibas3kontrol3">Ekip Lideri Sayı Kontrol 3</string>
+    <string name="ibas3aciklama">Açıklama</string>
+    <string name="ibas3ekle">Ekle/Değiştir</string>
+
+    <string name="ibitbastarih">İş Başlama Tarihi</string>
+    <string name="ibitbittarih">İş Bitirme Tarihi</string>
+
+    <string name="pecalismaalani">Çalışma Alanı</string>
+    <string name="pesigorta">SGK Başlatılsın mı?</string>
+    <string name="pefoto">Foto</string>
+    <string name="pebelgeler">Belgeler</string>
+
+    <string name="padsoyad">Ad - Soyad</string>
+
+    <string name="pskartno">Kart No</string>
+    <string name="psbarkod">Sicil No</string>
+    <string name="pstc">TC Kimlik</string>
+    <string name="psad">Ad</string>
+    <string name="pssoyad">Soyad</string>
+    <string name="psdogumtarihi">Doğum Tarihi</string>
+    <string name="pscinsiyet">Cinsiyet</string>
+    <string name="psbabaadi">Baba Adı</string>
+    <string name="psgsm">Cep Tel</string>
+    <string name="psozeldurum">Özel Durum</string>
+    <string name="psgorev">Görev</string>
+    <string name="psbolge">Bölge</string>
+    <string name="psbolge2">Bölge 2</string>
+    <string name="psbolge3">Bölge 3</string>
+    <string name="psbolge4">Bölge 4</string>
+    <string name="psbolge5">Bölge 5</string>
+    <string name="psekiplideri">Ekip Lideri</string>
+    <string name="psekiplideri2">Ekip Lideri 2</string>
+    <string name="psekiplideri3">Ekip Lideri 3</string>
+    <string name="psbarkodoku">Sorgula</string>
+    <string name="psbarkodyeni">Temizle</string>
+    <string name="pskartesletitle">Personel - Kart Eşle</string>
+    <string name="pskartesleme">Kaydet</string>
+    <string name="pssgkevrak">SGK Evrak</string>
+    <string name="psnufusbilgisi">Nüfus Bilgisi</string>
+    <string name="psnufusbilgisikaydet">Kaydet</string>
+    <string name="psnufusbilgisiiptalet">İptal Et</string>
+
+    <string name="plgorevler">Görevler - Özet</string>
+    <string name="plgorevlerdetay">Görevler - Detay</string>
+    <string name="plservis">Servis</string>
+    <string name="pldokuman">Doküman</string>
+    <string name="placiklama">Açıklama</string>
+
+    <string name="sdfromserver">Sunucudan Veri Alma İşlemleri</string>
+    <string name="sdfromservertime">Son Veri Alımı</string>
+    <string name="sdsyncfromserver">Tüm Verileri Al</string>
+    <string name="sdtoserver">Yerel Kayıt İşlemleri</string>
+    <string name="sdtoservertimeputantaj">Son Puantaj Veri Gönderimi</string>
+    <string name="sdtoservertimepersonel">Son Personel Veri Gönderimi</string>
+    <string name="sdsyncpuantaj">Puantaj Gönder</string>
+    <string name="sdsyncpersonel">Personel Gönder</string>
+    <string name="sdsync">Tüm Verileri Gönder</string>
+
+    <string name="serviceUrl">http://www.guleryuzcv.net/t_istakip/mobilsrv/vtysv5.php</string>
+
+    <string name="msgInternetNoConnection">İnternet Bağlantınız Bulunmamaktadır</string>
+</resources>
+

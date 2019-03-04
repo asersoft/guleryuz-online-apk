@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/border_bekleyenler"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/border_gray"
+        android:layout_height="30dp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="45dp"
+            android:layout_height="25dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/ibastc"
+            android:textSize="12sp"></TextView>
+
+        <TextView
+            android:id="@+id/wsPETC"
+            android:layout_width="100dp"
+            android:layout_height="25dp"
+            android:gravity="center_vertical"
+            android:textSize="12sp"></TextView>
+
+        <TextView
+            android:layout_height="30dp"
+            android:layout_width="60dp"
+            android:textSize="12sp"
+            android:text="@string/pskartno"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical">
+        </TextView>
+
+        <TextView
+            android:id="@+id/wsPEKartno"
+            android:layout_width="wrap_content"
+            android:textSize="12sp"
+            android:gravity="center_vertical"
+            android:layout_height="25dp">
+        </TextView>
+        <TextView
+            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:textSize="12sp"
+            android:text="@string/ibasbarkod"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical"
+            android:layout_weight="0.35">
+        </TextView>
+        <TextView
+            android:id="@+id/wsPESicilno"
+            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:textSize="12sp"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical">
+        </TextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/wsPEAd"
+            android:layout_width="100dp"
+            android:layout_height="25dp"
+            android:layout_weight="0.55"
+            android:gravity="center_vertical"
+            android:textSize="12sp"
+            android:textStyle="bold"></TextView>
+
+        <TextView
+            android:id="@+id/wsPEIslem"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/common_signin_btn_default_background"
+            android:textSize="12sp"></TextView>
+    </LinearLayout>
+</LinearLayout>

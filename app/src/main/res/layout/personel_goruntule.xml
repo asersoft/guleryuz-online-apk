@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/layoutIBas"
+    android:orientation="vertical">
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:background="@drawable/border_personelekleme"
+                android:layout_height="@dimen/peRowH">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/pskartno"/>
+
+                <TextView android:id="@+id/pekartno"
+                    android:layout_width="match_parent"
+                    android:textSize="15dp"
+                    android:layout_height="match_parent"
+                    android:singleLine="true"
+                    android:gravity="left|center_vertical"></TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:background="@drawable/border_personelekleme"
+                android:layout_height="@dimen/peRowH">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/psbarkod"/>
+
+                <TextView android:id="@+id/pesicilno"
+                    android:layout_width="match_parent"
+                    android:textSize="15dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:singleLine="true"></TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:background="@drawable/border_personelekleme"
+                android:layout_height="@dimen/peRowH">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/pstc"/>
+
+                <TextView android:id="@+id/petc"
+                    android:layout_width="match_parent"
+                    android:textSize="15dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:singleLine="true"></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/peRowH"
+                android:orientation="horizontal"
+                android:background="@drawable/border_personelekleme">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/padsoyad"/>
+                <TextView android:id="@+id/pead"
+                    android:layout_width="match_parent"
+                    android:textSize="15dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:singleLine="true"></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/peRowH"
+                android:orientation="horizontal"
+                android:background="@drawable/border_personelekleme">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/psdogumtarihi"/>
+                <TextView android:id="@+id/pedogumtarihi"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"></TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/peRowH"
+                android:orientation="horizontal"
+                android:background="@drawable/border_personelekleme">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/pscinsiyet"/>
+                <TextView android:id="@+id/pecinsiyet"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/peRowH"
+                android:orientation="horizontal"
+                android:background="@drawable/border_personelekleme">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/psbolge"/>
+                <TextView android:id="@+id/pebolge"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/peRowH"
+                android:orientation="horizontal"
+                android:background="@drawable/border_personelekleme">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/pecalismaalani"/>
+                <TextView android:id="@+id/pecalismaalani"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"/>
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/border_personelekleme"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/peRowH"
+                android:orientation="horizontal">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/psekiplideri"/>
+                <TextView android:id="@+id/peekiplideri"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layoutPEFoto"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:orientation="horizontal"
+                android:background="@drawable/border_personelsorgulama"
+                android:gravity="center_vertical|center_horizontal"
+                android:visibility="gone">
+                <ImageView
+                    android:id="@+id/peFoto"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

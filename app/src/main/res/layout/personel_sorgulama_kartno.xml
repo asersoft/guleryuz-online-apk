@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:background="@color/web20c1"
+        android:text="@string/sorgula"
+        android:id="@+id/pskartesletitle" />
+    <LinearLayout
+        android:background="@drawable/border_personelsorgulama"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal">
+        <TextView
+            android:paddingLeft="3dp"
+            android:gravity="center_vertical"
+            android:layout_width="120dp"
+            android:layout_height="35dp"
+            android:text="@string/pskartno"/>
+        <EditText android:id="@+id/psKartno"
+            android:textSize="15dp"
+            android:layout_height="40dp"
+            android:singleLine="true"
+            android:numeric="decimal"
+            android:layout_width="match_parent"></EditText>
+    </LinearLayout>
+    <LinearLayout
+        android:background="@drawable/border_personelsorgulama"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal">
+        <TextView
+            android:paddingLeft="3dp"
+            android:gravity="center_vertical"
+            android:layout_width="120dp"
+            android:layout_height="35dp"
+            android:text="@string/psbarkod"/>
+        <EditText android:id="@+id/psbarkod"
+            android:layout_width="match_parent"
+            android:textSize="15dp"
+            android:layout_height="40dp"
+            android:singleLine="true"
+            android:numeric="decimal"></EditText>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+        android:background="@drawable/border_personelsorgulama">
+        <TextView
+            android:paddingLeft="3dp"
+            android:gravity="center_vertical"
+            android:layout_width="120dp"
+            android:layout_height="35dp"
+            android:text="@string/pstc"/>
+        <EditText android:id="@+id/pstc"
+            android:layout_width="match_parent"
+            android:textSize="15dp"
+            android:layout_height="40dp"
+            android:singleLine="true"
+            android:numeric="decimal"></EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+        <Button android:id="@+id/psbarkodyeni"
+            android:gravity="center_horizontal"
+            android:text="@string/psbarkodyeni"
+            android:textStyle="bold"
+            android:layout_width="120dp"
+            android:layout_height="35dp"
+            android:layout_marginBottom="5dp"></Button>
+        <Button android:id="@+id/psbarkodoku"
+            android:gravity="center_horizontal"
+            android:text="@string/psbarkodoku"
+            android:textStyle="bold"
+            android:layout_width="120dp"
+            android:layout_height="35dp"
+            android:layout_marginBottom="5dp"></Button>
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+            <LinearLayout
+                android:id="@+id/layoutPSFoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/border_personelsorgulama"
+                android:gravity="center_vertical|center_horizontal"
+                android:visibility="gone">
+                <ImageView
+                    android:id="@+id/psFoto"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal"
+                android:background="@drawable/border_personelsorgulama">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
+                    android:text="@string/psad"/>
+                <TextView android:id="@+id/psad"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"></TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal"
+                android:background="@drawable/border_personelsorgulama">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
+                    android:text="@string/psdogumtarihi"/>
+                <TextView android:id="@+id/psdogumtarihi"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"></TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+                <Button android:id="@+id/pskartiptal"
+                    android:gravity="center_horizontal"
+                    android:text="@string/ibasiptal"
+                    android:textStyle="bold"
+                    android:layout_width="120dp"
+                    android:layout_height="35dp"
+                    android:layout_marginBottom="5dp"></Button>
+                <Button android:id="@+id/pskartesle"
+                    android:gravity="center_horizontal"
+                    android:text="@string/pskartesleme"
+                    android:textStyle="bold"
+                    android:layout_width="120dp"
+                    android:layout_height="35dp"
+                    android:layout_marginBottom="5dp"></Button>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
