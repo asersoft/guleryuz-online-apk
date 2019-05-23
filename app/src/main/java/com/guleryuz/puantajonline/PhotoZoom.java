@@ -1,4 +1,4 @@
-package guleryuz.puantajonline;
+package com.guleryuz.puantajonline;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,7 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import barcodescanner.app.com.barcodescanner.R;
+import com.squareup.picasso.Picasso;
+
 
 /**
  * Created by mehmet_erenoglu on 03.03.2017.
@@ -30,9 +31,15 @@ public class PhotoZoom extends AppCompatActivity implements View.OnClickListener
         expanded_image = (ImageView) findViewById(R.id.expanded_image);
 
         if(getIntent().hasExtra("photo")) {
-            Bitmap bmp = BitmapFactory.decodeFile(getIntent().getStringExtra("photo"));
+            if(getIntent().hasExtra("local") && getIntent().getStringExtra("local").equals("1")) {
+                Bitmap bmp = BitmapFactory.decodeFile(getIntent().getStringExtra("photo"));
 
-            expanded_image.setImageBitmap(bmp );
+                expanded_image.setImageBitmap(bmp );
+            }else {
+                Picasso.get()
+                        .load(getIntent().getStringExtra("photo"))
+                        .into(expanded_image);
+            }
         }
 
 

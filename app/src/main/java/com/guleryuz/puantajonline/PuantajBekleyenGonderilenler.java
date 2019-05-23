@@ -1,4 +1,4 @@
-package guleryuz.puantajonline;
+package com.guleryuz.puantajonline;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,7 +19,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import barcodescanner.app.com.barcodescanner.R;
 
 /**
  * Created by mehmet_erenoglu on 03.04.2017.
@@ -133,7 +132,7 @@ public class PuantajBekleyenGonderilenler extends AppCompatActivity implements V
                                             ArrayList<HashMap<String, String>> res2 = db.getMultiResult(new String[]{"OID", "SICILNO", "TICID", "URUNID", "GOREV", "MESAI", "KARTLAEKLENDI"}, "tarim_istakip_calisma_personel", "AKTARILDI<1 AND AKTARILDI_ONAY=0 AND TICID='" + calisma.get("OID") + "' AND FISNO='"+calisma.get("FISNO")+"'");
                                             for (int i = 0; i < res2.size(); i++) {
                                                 HashMap<String, String> pers = db.getOneRow(new String[]{"AD", "SOYAD", "CINSIYET"}, "tarim_istakip_personel", "ID='" + res2.get(i).get("SICILNO") + "'");
-                                                MainActivity.gpd.addPersonel(res2.get(i).get("GOREV"), res2.get(i).get("SICILNO"), pers.get("AD") + " " + pers.get("SOYAD"), pers.get("CINSIYET"), res2.get(i).get("MESAI"), res2.get(i).get("KARTLAEKLENDI"), res2.get(i).get("URUNID"));
+                                                MainActivity.gpd.addPersonel(res2.get(i).get("GOREV"), res2.get(i).get("SICILNO"), pers.get("AD") + " " + pers.get("SOYAD"), pers.get("CINSIYET"), res2.get(i).get("MESAI"), res2.get(i).get("KARTLAEKLENDI"), res2.get(i).get("URUNID"), pers.get("SOYAD"), pers.get("TC"), pers.get("KARTNO"));
                                             }
                                             Log.w("gp1servis", "" + calisma.get("SERVISVAR"));
                                             if (Integer.parseInt(calisma.get("SERVISVAR")) > 0) {
@@ -240,7 +239,7 @@ public class PuantajBekleyenGonderilenler extends AppCompatActivity implements V
                                                 for (int i = 0; i < res2.size(); i++) {
                                                     Log.w("gpdUpdate",res2.get(i).get("SICILNO")+" - "+res2.get(i).get("URUNID"));
                                                     HashMap<String, String> pers = db.getOneRow(new String[]{"AD", "SOYAD", "CINSIYET"}, "tarim_istakip_personel", "ID='" + res2.get(i).get("SICILNO") + "'");
-                                                    MainActivity.gpd.addPersonel(res2.get(i).get("GOREV"), res2.get(i).get("SICILNO"), pers.get("AD") + " " + pers.get("SOYAD"), pers.get("CINSIYET"), res2.get(i).get("MESAI"), res2.get(i).get("KARTLAEKLENDI"), res2.get(i).get("URUNID"));
+                                                    MainActivity.gpd.addPersonel(res2.get(i).get("GOREV"), res2.get(i).get("SICILNO"), pers.get("AD") + " " + pers.get("SOYAD"), pers.get("CINSIYET"), res2.get(i).get("MESAI"), res2.get(i).get("KARTLAEKLENDI"), res2.get(i).get("URUNID"), res2.get(i).get("SOYADI"), res2.get(i).get("TC"), res2.get(i).get("KARTNO"));
                                                 }
                                                 Log.w("gp1servis", "" + calisma.get("SERVISVAR"));
                                                 if (Integer.parseInt(calisma.get("SERVISVAR")) > 0) {

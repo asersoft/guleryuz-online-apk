@@ -1,4 +1,4 @@
-package guleryuz.puantajonline;
+package com.guleryuz.puantajonline;
 
 import android.app.Service;
 import android.content.Intent;
@@ -6,18 +6,17 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import java.util.HashMap;
+import com.guleryuz.puantajonline.synchronize.Ekiplideri;
+import com.guleryuz.puantajonline.synchronize.Firma;
+import com.guleryuz.puantajonline.synchronize.FirmaBolge;
+import com.guleryuz.puantajonline.synchronize.Gorev;
+import com.guleryuz.puantajonline.synchronize.Personel;
+import com.guleryuz.puantajonline.synchronize.PersonelBelgeTur;
+import com.guleryuz.puantajonline.synchronize.Servis;
+import com.guleryuz.puantajonline.synchronize.Urun;
+import com.guleryuz.puantajonline.synchronize.Yetkili;
 
-import barcodescanner.app.com.barcodescanner.synchronize.*;
-import guleryuz.puantajonline.synchronize.Ekiplideri;
-import guleryuz.puantajonline.synchronize.Firma;
-import guleryuz.puantajonline.synchronize.FirmaBolge;
-import guleryuz.puantajonline.synchronize.Gorev;
-import guleryuz.puantajonline.synchronize.Personel;
-import guleryuz.puantajonline.synchronize.PersonelBelgeTur;
-import guleryuz.puantajonline.synchronize.Servis;
-import guleryuz.puantajonline.synchronize.Urun;
-import guleryuz.puantajonline.synchronize.Yetkili;
+import java.util.HashMap;
 
 /**
  * Created by Asersoft on 9.12.2016.

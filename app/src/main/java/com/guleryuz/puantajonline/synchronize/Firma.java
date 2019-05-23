@@ -1,20 +1,20 @@
-package guleryuz.puantajonline.synchronize;
+package com.guleryuz.puantajonline.synchronize;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.guleryuz.puantajonline.CallBacks.TaskCallback;
+import com.guleryuz.puantajonline.Database;
+import com.guleryuz.puantajonline.MainActivity;
+import com.guleryuz.puantajonline.R;
+import com.guleryuz.puantajonline.WebRequest;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-
-import barcodescanner.app.com.barcodescanner.*;
-import guleryuz.puantajonline.CallBacks.TaskCallback;
-import guleryuz.puantajonline.Database;
-import guleryuz.puantajonline.MainActivity;
-import guleryuz.puantajonline.WebRequest;
 
 /**
  * Created by Asersoft on 25.02.2017.

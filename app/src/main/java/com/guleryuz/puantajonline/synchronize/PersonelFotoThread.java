@@ -1,4 +1,4 @@
-package guleryuz.puantajonline.synchronize;
+package com.guleryuz.puantajonline.synchronize;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.guleryuz.puantajonline.MainActivity;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,7 +16,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 
-import guleryuz.puantajonline.MainActivity;
 
 /**
  * Created by Asersoft on 8.04.2017.

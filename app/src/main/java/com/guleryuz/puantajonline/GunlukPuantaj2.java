@@ -1,4 +1,4 @@
-package guleryuz.puantajonline;
+package com.guleryuz.puantajonline;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,9 +20,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 import 	android.text.method.DigitsKeyListener;
 
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.guleryuz.puantajonline.OnlineService.ServerData;
 import com.honeywell.aidc.*;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +43,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import barcodescanner.app.com.barcodescanner.R;
 
 /**
  * Created by mehmet_erenoglu on 28.02.2017.
@@ -48,7 +60,7 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
     static final int REQUEST_GP2G = 2;
     static final int REQUEST_GP3 = 3;
     static final int REQUEST_GP4P = 4;
-    private Database db;
+    //private Database db;
     private ArrayAdapter<KeyValueP> daGorev, daIBasUrun;
     private String gorev;
     private static String ibasUrun;
@@ -59,7 +71,7 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
     private HashMap<String, TextView> gorevMesai;
     private HashMap<String, TextView> gorevEKToplam;
     private HashMap<String, ImageView> gorevPersonel;
-    private KeyValueP[] gorevler;
+    private List<KeyValueP> gorevler;
 
     private LinkedHashMap<String, HeaderInfo> mySection = new LinkedHashMap<>();
 
@@ -71,36 +83,61 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(barcodescanner.app.com.barcodescanner.R.layout.ise_baslama2);
+        setContentView(com.guleryuz.puantajonline.R.layout.ise_baslama2);
         ParentCtxt=this;
 
-        ibasLayout=(LinearLayout)findViewById(barcodescanner.app.com.barcodescanner.R.id.ibasLayout);
-        ibasBtnIptal=(Button)findViewById(barcodescanner.app.com.barcodescanner.R.id.ibasBtnIptal);
+        ibasLayout=(LinearLayout)findViewById(R.id.ibasLayout);
+        ibasBtnIptal=(Button)findViewById(R.id.ibasBtnIptal);
         ibasBtnIptal.setOnClickListener(this);
-        ibasBtnSonraki=(Button)findViewById(barcodescanner.app.com.barcodescanner.R.id.ibasBtnSonraki);
+        ibasBtnSonraki=(Button)findViewById(R.id.ibasBtnSonraki);
         ibasBtnSonraki.setOnClickListener(this);
 
-        spnGorev=(Spinner)findViewById(barcodescanner.app.com.barcodescanner.R.id.spnGorev);
-        spnIBasUrun=(Spinner)findViewById(barcodescanner.app.com.barcodescanner.R.id.ibasurun);
-        ibasMesai=(EditText)findViewById(barcodescanner.app.com.barcodescanner.R.id.ibaspMesai);
-        imgBtnBarcode=(ImageView)findViewById(barcodescanner.app.com.barcodescanner.R.id.btnBarcode);
-        imgBtnBarcode.setImageResource(barcodescanner.app.com.barcodescanner.R.drawable.barcode);
+        spnGorev=(Spinner)findViewById(R.id.spnGorev);
+        spnIBasUrun=(Spinner)findViewById(R.id.ibasurun);
+        ibasMesai=(EditText)findViewById(R.id.ibaspMesai);
+        imgBtnBarcode=(ImageView)findViewById(R.id.btnBarcode);
+        imgBtnBarcode.setImageResource(R.drawable.barcode);
         imgBtnBarcode.setOnClickListener(this);
-        imgBtnManuelAdd=(ImageView)findViewById(barcodescanner.app.com.barcodescanner.R.id.btnManuelAdd);
-        imgBtnManuelAdd.setImageResource(barcodescanner.app.com.barcodescanner.R.drawable.searchadd);
+        imgBtnManuelAdd=(ImageView)findViewById(R.id.btnManuelAdd);
+        imgBtnManuelAdd.setImageResource(R.drawable.searchadd);
         imgBtnManuelAdd.setOnClickListener(this);
-        ibasGorevEkipLideri=(TextView) findViewById(barcodescanner.app.com.barcodescanner.R.id.ibasGorevEkipLideri);
+        ibasGorevEkipLideri=(TextView) findViewById(R.id.ibasGorevEkipLideri);
 
         initalizeBarcode();
 
-        db=new Database(getApplicationContext());
-
-        HashMap<String, String> ekiplideri = db.getOneRow(new String[]{"AD"}, "tarim_istakip_ekiplideri","id="+MainActivity.gpd.getEkiplideri());
-        if(ekiplideri!=null){
-            ibasGorevEkipLideri.setText(ekiplideri.get("AD"));
+        String ekiplideri = "";
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            ekiplideri = extras.getString("EkipLideri");
+            //The key argument here must match that used in the other activity
         }
 
-        daGorev=new ArrayAdapter<KeyValueP>(ParentCtxt, android.R.layout.simple_spinner_item, db.gorevGetir(MainActivity.gpd.getBolge(), MainActivity.gpd.getFirma()));//MainActivity.gpd.getCalismaalani(), MainActivity.gpd.getFirma()));
+        //db=new Database(getApplicationContext());
+
+        ibasGorevEkipLideri.setText(ekiplideri);
+
+        //gorevleri getir
+        gorevler = new ArrayList<KeyValueP>();
+        try {
+            List<String[]> req = new ArrayList<String[]>();
+            req.add(new String[]{"op", "gorev"});
+            req.add(new String[]{"firmaid", MainActivity.gpd.getFirma()});
+            req.add(new String[]{"bolge", MainActivity.gpd.getBolge()});
+
+            List<String[]> resp = new ArrayList<String[]>();
+            resp.add(new String[]{"id", "id"});
+            resp.add(new String[]{"gorev", "gorev"});
+            List<HashMap<String, String>> data = new ServerData(this).getDataFromServer(MainActivity.userid, "GorevGetir", req, resp);
+
+            for (int i = 0; i < data.size(); i++) {
+                gorevler.add(new KeyValueP(data.get(i).get("id"), data.get(i).get("gorev")));
+            }
+        }catch (Exception ex){
+            Log.w("GunlukPuantaj2", ex.getStackTrace().toString());
+        }
+
+
+        daGorev=new ArrayAdapter<KeyValueP>(ParentCtxt, android.R.layout.simple_spinner_item, gorevler);
         daGorev.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnGorev.setAdapter(daGorev);
         spnGorev.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -116,7 +153,27 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
             }
         });
 
-        daIBasUrun=new ArrayAdapter<KeyValueP>(ParentCtxt, android.R.layout.simple_spinner_item, db.urunGetir(MainActivity.gpd.getCalismaalani(), MainActivity.gpd.getFirma(), MainActivity.gpd.getYetkili()));
+        List<KeyValueP> urunler = new ArrayList<KeyValueP>();
+        try {
+            urunler.add(new KeyValueP("-1","Seçiniz"));
+            List<String[]> req = new ArrayList<String[]>();
+            req.add(new String[]{"op", "urun"});
+            req.add(new String[]{"firmaid", MainActivity.gpd.getFirma()});
+            req.add(new String[]{"bolge", MainActivity.gpd.getBolge()});
+
+            List<String[]> resp = new ArrayList<String[]>();
+            resp.add(new String[]{"id", "id"});
+            resp.add(new String[]{"urun", "urun"});
+            List<HashMap<String, String>> data = new ServerData(this).getDataFromServer(MainActivity.userid, "UrunGetir", req, resp);
+
+            for (int i = 0; i < data.size(); i++) {
+                urunler.add(new KeyValueP(data.get(i).get("id"), data.get(i).get("urun")));
+            }
+        }catch (Exception ex){
+            Log.w("GunlukPuantaj2Urun", ex.getStackTrace().toString());
+        }
+
+        daIBasUrun=new ArrayAdapter<KeyValueP>(ParentCtxt, android.R.layout.simple_spinner_item, urunler);
         daIBasUrun.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnIBasUrun.setAdapter(daIBasUrun);
         spnIBasUrun.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -138,17 +195,20 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
         gorevEKToplam=new HashMap<String, TextView>();
         gorevMesai=new HashMap<String, TextView>();
 
-        gorevler=db.gorevGetir(MainActivity.gpd.getBolge(), MainActivity.gpd.getFirma());//MainActivity.gpd.getCalismaalani(), MainActivity.gpd.getFirma());
-        for (int i=0; i<gorevler.length; i++){
-            layouts=(LinearLayout)this.getLayoutInflater().inflate(barcodescanner.app.com.barcodescanner.R.layout.grid_single_gorev,null);
-            TextView txt=(TextView)layouts.findViewById(barcodescanner.app.com.barcodescanner.R.id.gorev);
-            txt.setText(gorevler[i].name);
-            txt.setTag(gorevler[i].ID);
-            String g=gorevler[i].name;
-            String gid=gorevler[i].ID;
 
-            ImageView imageViewtmg = (ImageView)layouts.findViewById(barcodescanner.app.com.barcodescanner.R.id.toplumesaiguncell);
-            imageViewtmg.setImageResource(barcodescanner.app.com.barcodescanner.R.drawable.refresh);
+
+
+        //gorevler=db.gorevGetir(MainActivity.gpd.getBolge(), MainActivity.gpd.getFirma());//MainActivity.gpd.getCalismaalani(), MainActivity.gpd.getFirma());
+        for (int i=0; i<gorevler.size(); i++){
+            layouts=(LinearLayout)this.getLayoutInflater().inflate(R.layout.grid_single_gorev,null);
+            TextView txt=(TextView)layouts.findViewById(R.id.gorev);
+            txt.setText(gorevler.get(i).name);
+            txt.setTag(gorevler.get(i).ID);
+            String g=gorevler.get(i).name;
+            String gid=gorevler.get(i).ID;
+
+            ImageView imageViewtmg = (ImageView)layouts.findViewById(R.id.toplumesaiguncell);
+            imageViewtmg.setImageResource(R.drawable.refresh);
             imageViewtmg.setTag(g+";"+gid);
             imageViewtmg.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -190,8 +250,8 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
             });
 
 
-            ImageView imageView = (ImageView)layouts.findViewById(barcodescanner.app.com.barcodescanner.R.id.personelliste);
-            imageView.setImageResource(barcodescanner.app.com.barcodescanner.R.drawable.list);
+            ImageView imageView = (ImageView)layouts.findViewById(R.id.personelliste);
+            imageView.setImageResource(R.drawable.list);
 
             imageView.setTag(g+";"+gid);
             imageView.setOnClickListener(new View.OnClickListener() {
@@ -209,34 +269,34 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
                     }
                 }
             });
-            TextView tmp=(TextView)layouts.findViewById(barcodescanner.app.com.barcodescanner.R.id.ibasBayan);
+            TextView tmp=(TextView)layouts.findViewById(R.id.ibasBayan);
             tmp.setText("-");
-            gorevBayan.put(gorevler[i].ID, tmp);
-            tmp=(TextView)layouts.findViewById(barcodescanner.app.com.barcodescanner.R.id.ibasErkek);
+            gorevBayan.put(gorevler.get(i).ID, tmp);
+            tmp=(TextView)layouts.findViewById(R.id.ibasErkek);
             tmp.setText("-");
-            gorevErkek.put(gorevler[i].ID, tmp);
-            tmp=(TextView)layouts.findViewById(barcodescanner.app.com.barcodescanner.R.id.ibasToplam);
+            gorevErkek.put(gorevler.get(i).ID, tmp);
+            tmp=(TextView)layouts.findViewById(R.id.ibasToplam);
             tmp.setText("-");
-            gorevEKToplam.put(gorevler[i].ID, tmp);
-            TextView tmp2=(TextView) layouts.findViewById(barcodescanner.app.com.barcodescanner.R.id.ibasMesai);
+            gorevEKToplam.put(gorevler.get(i).ID, tmp);
+            TextView tmp2=(TextView) layouts.findViewById(R.id.ibasMesai);
             tmp2.setText("-");
-            gorevMesai.put(gorevler[i].ID, tmp2);
+            gorevMesai.put(gorevler.get(i).ID, tmp2);
             ibasLayout.addView(layouts);
 
             if (MainActivity.gpd.getKayitdurumu().equals("guncelleme")){
-                int[] v = MainActivity.gpd.getPersonelBayanErkek(gorevler[i].ID);
+                int[] v = MainActivity.gpd.getPersonelBayanErkek(gorevler.get(i).ID);
 
-                gorevBayan.get(gorevler[i].ID).setText("" + (v[1] != 0 ? v[1] : "-"));
-                gorevErkek.get(gorevler[i].ID).setText("" + (v[0] != 0 ? v[0] : "-"));
-                gorevEKToplam.get(gorevler[i].ID).setText("" + (v[0]+v[1]));
+                gorevBayan.get(gorevler.get(i).ID).setText("" + (v[1] != 0 ? v[1] : "-"));
+                gorevErkek.get(gorevler.get(i).ID).setText("" + (v[0] != 0 ? v[0] : "-"));
+                gorevEKToplam.get(gorevler.get(i).ID).setText("" + (v[0]+v[1]));
                 float toplammesai = 0;
-                List<GunlukPersonelData> personels = MainActivity.gpd.getPersonel(gorevler[i].ID);
+                List<GunlukPersonelData> personels = MainActivity.gpd.getPersonel(gorevler.get(i).ID);
                 if(personels!=null) {
                     for (int j = 0; j < personels.size(); j++) {
                         toplammesai += (personels.get(j).mesai.equals("") ? 0 : Float.parseFloat(personels.get(j).mesai));
                     }
                 }
-                gorevMesai.get(gorevler[i].ID).setText("" + (toplammesai == 0 ? "-" : toplammesai));
+                gorevMesai.get(gorevler.get(i).ID).setText("" + (toplammesai == 0 ? "-" : toplammesai));
             }
         }
     }
@@ -272,7 +332,7 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
     }
 
     public void onClick(View v){
-        if (v.getId()== barcodescanner.app.com.barcodescanner.R.id.ibasBtnIptal){
+        if (v.getId()== R.id.ibasBtnIptal){
             AlertDialog.Builder builder = new AlertDialog.Builder(ParentCtxt);
             builder.setTitle("Uyarı");
             builder.setMessage("Puantaj ekranından çıkmak istediğinize emin misiniz?");
@@ -299,10 +359,10 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
 
             AlertDialog alert = builder.create();
             alert.show();
-        }else if(v.getId()== barcodescanner.app.com.barcodescanner.R.id.ibasBtnSonraki){
+        }else if(v.getId()== R.id.ibasBtnSonraki){
             boolean gstatus=false;
-            for (int i=0; i<gorevler.length; i++){
-                if (MainActivity.gpd.getPersonelSize(gorevler[i].ID)>0){
+            for (int i=0; i<gorevler.size(); i++){
+                if (MainActivity.gpd.getPersonelSize(gorevler.get(i).ID)>0){
                     gstatus=true;
                     break;
                 }
@@ -318,7 +378,7 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
             }else{
                 new ShowToast(ParentCtxt, "Görev Personel ataması yapılmamış.");
             }
-        }else if(v.getId()== barcodescanner.app.com.barcodescanner.R.id.btnManuelAdd)
+        }else if(v.getId()== R.id.btnManuelAdd)
         {
             Intent i = new Intent(getApplicationContext(), GunlukPuantaj2Personel.class);
             i.putExtra("userid", MainActivity.userid);
@@ -347,7 +407,7 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
             if (requestCode == REQUEST_GP2P && resultCode == RESULT_OK)//GunlukPuantaj2Personel
             {
                 Log.w("gp2p", intent.getStringExtra("sicilno")+" - "+intent.getStringExtra("cinsiyet"));
-                GunlukPersonelData tmp = new GunlukPersonelData(intent.getStringExtra("sicilno"), intent.getStringExtra("adi"), intent.getStringExtra("cinsiyet"), ibasMesai.getText().toString(), "0", ibasUrun);
+                GunlukPersonelData tmp = new GunlukPersonelData(intent.getStringExtra("sicilno"), intent.getStringExtra("adi"), intent.getStringExtra("cinsiyet"), ibasMesai.getText().toString(), "0", ibasUrun, intent.getStringExtra("soyad"), intent.getStringExtra("tc"), intent.getStringExtra("kartno"));
                 //ibasMesai.setText("");
                 String gorev2=MainActivity.gpd.addPersonel(gorev, tmp);
                 if (!gorev2.equals(gorev)) {
@@ -424,12 +484,12 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
                 }*/
                 Log.w("here2", "" + MainActivity.gpd.getPersonelSize(gorev2));
             } else if (requestCode == REQUEST_GP2G && resultCode == RESULT_OK) {
-                for (int i = 0; i < gorevler.length; i++) {
-                    int[] v = MainActivity.gpd.getPersonelBayanErkek(gorevler[i].ID);
+                for (int i = 0; i < gorevler.size(); i++) {
+                    int[] v = MainActivity.gpd.getPersonelBayanErkek(gorevler.get(i).ID);
 
-                    gorevBayan.get(gorevler[i].ID).setText("" + (v[1] != 0 ? v[1] : "-"));
-                    gorevErkek.get(gorevler[i].ID).setText("" + (v[0] != 0 ? v[0] : "-"));
-                    gorevEKToplam.get(gorevler[i].ID).setText("" + (v[0] + v[1]));
+                    gorevBayan.get(gorevler.get(i).ID).setText("" + (v[1] != 0 ? v[1] : "-"));
+                    gorevErkek.get(gorevler.get(i).ID).setText("" + (v[0] != 0 ? v[0] : "-"));
+                    gorevEKToplam.get(gorevler.get(i).ID).setText("" + (v[0] + v[1]));
                 }
             } else if (requestCode == REQUEST_GP3 && resultCode == RESULT_OK) {
                 if (intent.hasExtra("exit")) {
@@ -466,15 +526,50 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
 
     private void barcodeScanResult(String scanContent){
         if (scanContent!=null && !scanContent.equals("")) {
-            HashMap<String, String> personelbilgileri = db.personelBilgileriGetir(scanContent, "", "", "");
-            if (personelbilgileri.size() > 0) {
+            /*List<HashMap<String, String>> personelbilgileri = null;
+            try {
+                List<String[]> req = new ArrayList<String[]>();
+                req.add(new String[]{"op", "persor"});
+                req.add(new String[]{"kartno", scanContent});
+                req.add(new String[]{"sicilno", ""});
+                req.add(new String[]{"ad", ""});
+                req.add(new String[]{"soyad", ""});
+
+                List<String[]> resp = new ArrayList<String[]>();
+                resp.add(new String[]{"ID", "id"});
+                resp.add(new String[]{"TC", "tc"});
+                resp.add(new String[]{"AD", "ad"});
+                resp.add(new String[]{"SOYAD", "soyad"});
+                resp.add(new String[]{"DOGUMTARIHI", "dogumtarihi"});
+                resp.add(new String[]{"CINSIYET", "cinsiyet"});
+                resp.add(new String[]{"GOREV", "gorev"});
+                resp.add(new String[]{"BOLGE", "bolge"});
+                resp.add(new String[]{"BOLGE2", "bolge2"});
+                resp.add(new String[]{"BOLGE3", "bolge3"});
+                resp.add(new String[]{"BOLGE4", "bolge4"});
+                resp.add(new String[]{"BOLGE5", "bolge5"});
+                resp.add(new String[]{"RESIM", "resim"});
+                resp.add(new String[]{"KARTNO", "kartno"});
+                resp.add(new String[]{"SGK_EVRAK", "sgk_evrak"});
+                resp.add(new String[]{"SSK", "ssk"});
+                resp.add(new String[]{"SSK_CIKIS", "ssk_cikis"});
+                resp.add(new String[]{"DEVAM", "devam"});
+                resp.add(new String[]{"ONAY", "onay"});
+
+                personelbilgileri = new ServerData(this).getDataFromServer(MainActivity.userid, "PersonelBilgisiGetir", req, resp);
+            }catch (Exception ex){
+                Log.w("GunlukPuantaj2Urun", ex.getStackTrace().toString());
+            }*/
+
+            List<HashMap<String, String>> personelbilgileri = new ServerData(this).personelSorgula(MainActivity.userid, scanContent,"","","","");
+            if (personelbilgileri!=null && personelbilgileri.size() > 0) {
                 Log.w("puantaj", scanContent);
                 Intent intPersonel = new Intent(getApplicationContext(), PersonelGoruntule.class);
                 intPersonel.putExtra("kartno", scanContent);
                 intPersonel.putExtra("shortdisplay", scanContent);
                 startActivity(intPersonel);
 
-                GunlukPersonelData tmp = new GunlukPersonelData(personelbilgileri.get("ID"), personelbilgileri.get("AD") + " " + personelbilgileri.get("SOYAD"), personelbilgileri.get("CINSIYET"), ibasMesai.getText().toString(), "1", ibasUrun);
+                GunlukPersonelData tmp = new GunlukPersonelData(personelbilgileri.get(0).get("ID"), personelbilgileri.get(0).get("AD") + " " + personelbilgileri.get(0).get("SOYAD"), personelbilgileri.get(0).get("CINSIYET"), ibasMesai.getText().toString(), "1", ibasUrun, personelbilgileri.get(0).get("SOYAD"),  personelbilgileri.get(0).get("TC"),  personelbilgileri.get(0).get("KARTNO"));
                 String gorev2 = MainActivity.gpd.addPersonel(gorev, tmp);
                 if (!gorev2.equals(gorev)) {
                     int[] v = MainActivity.gpd.getPersonelBayanErkek(gorev2);
@@ -488,28 +583,6 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
                         toplammesai += (personels.get(i).mesai.equals("") ? 0 : Float.parseFloat(personels.get(i).mesai));
                     }
                     gorevMesai.get(gorev2).setText("" + (toplammesai == 0 ? "-" : toplammesai));
-                                /*int toplammesai = 0;
-                                List<GunlukPersonelData> personels = MainActivity.gpd.getPersonel(gorev2);
-                                for (int i = 0; i < personels.size(); i++) {
-                                    toplammesai += (personels.get(i).mesai.equals("") ? 0 : Integer.parseInt(personels.get(i).mesai));
-                                }
-                                gorevMesai.get(gorev2).setText("" + (toplammesai == 0 ? "-" : toplammesai));
-
-                                if (personelbilgileri.get("CINSIYET").equals("Erkek")) {
-                                    String val = gorevErkek.get(gorev2).getText().toString();
-                                    if (val.equals("-")) {
-                                        val = "0";
-                                    }
-                                    int valInt = Integer.parseInt(val);
-                                    gorevErkek.get(gorev2).setText("" + ((valInt - 1) == 0 ? "-" : (valInt - 1)));
-                                } else {
-                                    String val = gorevBayan.get(gorev2).getText().toString();
-                                    if (val.equals("-")) {
-                                        val = "0";
-                                    }
-                                    int valInt = Integer.parseInt(val);
-                                    gorevBayan.get(gorev2).setText("" + ((valInt - 1) == 0 ? "-" : (valInt - 1)));
-                                }*/
                 }
                 int[] v = MainActivity.gpd.getPersonelBayanErkek(gorev);
 
@@ -522,27 +595,6 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
                     toplammesai += (personels.get(i).mesai.equals("") ? 0 : Float.parseFloat(personels.get(i).mesai));
                 }
                 gorevMesai.get(gorev).setText("" + (toplammesai == 0 ? "-" : toplammesai));
-                            /*int toplammesai = 0;
-                            List<GunlukPersonelData> personels = MainActivity.gpd.getPersonel(gorev);
-                            for (int i = 0; i < personels.size(); i++) {
-                                toplammesai += (personels.get(i).mesai.equals("") ? 0 : Integer.parseInt(personels.get(i).mesai));
-                            }
-                            gorevMesai.get(gorev).setText("" + (toplammesai == 0 ? "-" : toplammesai));
-                            if (personelbilgileri.get("CINSIYET").equals("Erkek")) {
-                                String val = gorevErkek.get(gorev).getText().toString();
-                                if (val.equals("-")) {
-                                    val = "0";
-                                }
-                                int valInt = Integer.parseInt(val);
-                                gorevErkek.get(gorev).setText("" + (valInt + 1));
-                            } else {
-                                String val = gorevBayan.get(gorev).getText().toString();
-                                if (val.equals("-")) {
-                                    val = "0";
-                                }
-                                int valInt = Integer.parseInt(val);
-                                gorevBayan.get(gorev).setText("" + (valInt + 1));
-                            }*/
             } else {
                 new ShowToast(ParentCtxt, "Kartnoya ait personel bulunamadı");
             }
@@ -683,3 +735,4 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
     }
 
 }
+

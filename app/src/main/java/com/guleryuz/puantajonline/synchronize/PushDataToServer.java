@@ -1,4 +1,4 @@
-package guleryuz.puantajonline.synchronize;
+package com.guleryuz.puantajonline.synchronize;
 
 /**
  * Created by Asersoft on 26.02.2017.
@@ -25,11 +25,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import barcodescanner.app.com.barcodescanner.*;
-import guleryuz.puantajonline.CallBacks.TaskCallback;
-import guleryuz.puantajonline.Database;
-import guleryuz.puantajonline.MainActivity;
-import guleryuz.puantajonline.WebRequest;
+import com.guleryuz.puantajonline.CallBacks.TaskCallback;
+import com.guleryuz.puantajonline.Database;
+import com.guleryuz.puantajonline.MainActivity;
+import com.guleryuz.puantajonline.R;
+import com.guleryuz.puantajonline.WebRequest;
 
 /**
  * Created by Asersoft on 26.02.2017.
@@ -368,7 +368,7 @@ public class PushDataToServer extends AsyncTask<Void, Void, Void> {
             params.put("prgver", MainActivity.PROGRAM_VERSION);
             params.put("ttt", "" + System.currentTimeMillis());
 
-            WebRequest webreq = new WebRequest();;
+            WebRequest webreq = new WebRequest();
             String jsonStr = webreq.makeWebServiceCall(context.getResources().getString(R.string.serviceUrl), WebRequest.POSTRequest, params);
 
             Log.w("pushdata2", jsonStr);

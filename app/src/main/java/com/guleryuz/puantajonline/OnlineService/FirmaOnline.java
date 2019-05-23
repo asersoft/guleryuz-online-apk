@@ -1,4 +1,4 @@
-package com.guleryuz.puantajonline.synchronize;
+package com.guleryuz.puantajonline.OnlineService;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -7,97 +7,111 @@ import android.util.Log;
 
 import com.guleryuz.puantajonline.CallBacks.TaskCallback;
 import com.guleryuz.puantajonline.Database;
-import com.guleryuz.puantajonline.MainActivity;
 import com.guleryuz.puantajonline.R;
 import com.guleryuz.puantajonline.WebRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 
-/**
- * Created by Asersoft on 26.02.2017.
- */
-
-public class Yetkili extends AsyncTask<Void, Void, Void> {
+public class FirmaOnline extends AsyncTask<Void, Void, Void> {
     private TaskCallback mCallback;
     public String uid;
     public Context context;
     public Database db;
     private ProgressDialog proDialog;
-    private boolean status=false;
+    private boolean status = false;
+    List<HashMap<String, String>> data = null;
 
-    public Yetkili() {
+    public FirmaOnline() {
 
     }
 
-    public Yetkili(TaskCallback callback) {
+    public FirmaOnline(TaskCallback callback) {
         mCallback = callback;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        if(mCallback!=null) {
+        if (mCallback != null) {
             if (proDialog == null) {
                 proDialog = new ProgressDialog(context);
                 proDialog.setCanceledOnTouchOutside(false);
                 proDialog.setCancelable(false);
-                proDialog.setTitle("Veriler");
-                proDialog.setMessage("İndiriliyor... - Yetkili");
+                proDialog.setTitle("Firma Listesi");
+                proDialog.setMessage("Yükleniyor..");
             }
             proDialog.show();
         }
     }
+
     @Override
     protected Void doInBackground(Void... arg0) {
-        try{
+        try {
             WebRequest webreq = new WebRequest();
 
             // Making a request to url and getting response
-            HashMap<String, String> params=new HashMap<String, String>();
-            params.put("token","6ce304f73ce841efaf1490bb98474eef");
-            params.put("op","yetkili");
-            params.put("uid",uid);
-            params.put("ttt",""+System.currentTimeMillis());
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put("token", "6ce304f73ce841efaf1490bb98474eef");
+            params.put("op", "firma");
+            params.put("uid", uid);
+            params.put("ttt", "" + System.currentTimeMillis());
 
             String jsonStr = webreq.makeWebServiceCall(context.getResources().getString(R.string.serviceUrl), WebRequest.POSTRequest, params);
 
             Log.w("Response: ", "> " + jsonStr);
+
             JSONObject jsonObj = new JSONObject(jsonStr);
-            JSONArray values = jsonObj.getJSONArray("yetkili");
-            if(values!=null) {
+            JSONArray values = jsonObj.getJSONArray("firma");
+            if (values != null) {
+                data=new ArrayList<HashMap<String, String>>();
+
                 for (int i = 0; i < values.length(); i++) {
                     JSONObject c = values.getJSONObject(i);
 
                     HashMap<String, String> tmp = new HashMap<String, String>();
 
-                    tmp.put("id", c.getString("yetkili_id"));
-                    tmp.put("yetkili", c.getString("yetkili"));
+                    tmp.put("id", c.getString("firma_id"));
+                    tmp.put("firma", c.getString("firma"));
+                    //tmp.put("devam", c.getString("devam"));
 
-                    db.yetkiliEkle(tmp);
+                    data.add(tmp);
+
+                    //db.firmaEkle(tmp);
                 }
-                db.dbstatDegerEkle("yetkili","fromserver", MainActivity.userid);
+                status = true;
+
+                Collections.sort(data, new Comparator<HashMap<String, String>>(){
+                    public int compare(HashMap<String, String> one, HashMap<String, String> two) {
+                        return one.get("firma").compareTo(two.get("firma"));
+                    }
+                });
+
+                //db.dbstatDegerEkle("firma","fromserver", MainActivity.userid);
             }
-        }catch (Exception ex){
-            Log.w("Yetkili", ex.getMessage());
-        }finally {
+        } catch (Exception ex) {
+            Log.w("FirmaOnline", ex.getMessage());
+        } finally {
             //db.close();
         }
         return null;
     }
+
     @Override
     protected void onPostExecute(Void requestresult) {
         super.onPostExecute(requestresult);
         //db.close();
-        if(mCallback!=null) {
-            mCallback.PersonelAsyncFinish(status);
+        if (mCallback != null) {
+            mCallback.SendDataAsyncFinish(status, "FirmaOnline", data, "");
 
             if (proDialog.isShowing())
                 proDialog.dismiss();
         }
     }
-
 }
-

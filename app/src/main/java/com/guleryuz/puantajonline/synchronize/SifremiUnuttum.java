@@ -1,4 +1,4 @@
-package guleryuz.puantajonline.synchronize;
+package com.guleryuz.puantajonline.synchronize;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,10 +10,10 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import guleryuz.puantajonline.Database;
-import barcodescanner.app.com.barcodescanner.R;
-import guleryuz.puantajonline.CallBacks.TaskCallback;
-import guleryuz.puantajonline.WebRequest;
+import com.guleryuz.puantajonline.CallBacks.TaskCallback;
+import com.guleryuz.puantajonline.Database;
+import com.guleryuz.puantajonline.R;
+import com.guleryuz.puantajonline.WebRequest;
 
 /**
  * Created by mehmet_erenoglu on 16.05.2017.

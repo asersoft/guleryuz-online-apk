@@ -1,12 +1,12 @@
-package com.guleryuz.puantajonline.synchronize;
+package com.guleryuz.puantajonline.OnlineService;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.guleryuz.puantajonline.CallBacks.ServiceCallBack;
 import com.guleryuz.puantajonline.CallBacks.TaskCallback;
-import com.guleryuz.puantajonline.Database;
 import com.guleryuz.puantajonline.MainActivity;
 import com.guleryuz.puantajonline.R;
 import com.guleryuz.puantajonline.WebRequest;
@@ -14,25 +14,27 @@ import com.guleryuz.puantajonline.WebRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-/**
- * Created by Asersoft on 26.02.2017.
- */
-
-public class Yetkili extends AsyncTask<Void, Void, Void> {
-    private TaskCallback mCallback;
+public class DataFromService extends AsyncTask<Void, Void, Void> {
+    private ServiceCallBack mCallback;
     public String uid;
     public Context context;
-    public Database db;
+    public String title;
+    public String reqtype;
+    public List<String[]> reqparam=null;
+    public List<String[]> resp=null;
     private ProgressDialog proDialog;
     private boolean status=false;
+    List<HashMap<String, String>> data = null;
 
-    public Yetkili() {
+    public DataFromService() {
 
     }
 
-    public Yetkili(TaskCallback callback) {
+    public DataFromService(ServiceCallBack callback) {
         mCallback = callback;
     }
 
@@ -44,8 +46,8 @@ public class Yetkili extends AsyncTask<Void, Void, Void> {
                 proDialog = new ProgressDialog(context);
                 proDialog.setCanceledOnTouchOutside(false);
                 proDialog.setCancelable(false);
-                proDialog.setTitle("Veriler");
-                proDialog.setMessage("İndiriliyor... - Yetkili");
+                proDialog.setTitle(title);
+                proDialog.setMessage("Yükleniyor...");
             }
             proDialog.show();
         }
@@ -58,33 +60,49 @@ public class Yetkili extends AsyncTask<Void, Void, Void> {
             // Making a request to url and getting response
             HashMap<String, String> params=new HashMap<String, String>();
             params.put("token","6ce304f73ce841efaf1490bb98474eef");
-            params.put("op","yetkili");
             params.put("uid",uid);
-            params.put("ttt",""+System.currentTimeMillis());
+            params.put("prgver",MainActivity.PROGRAM_VERSION);
+            if(reqparam!=null) {
+                for (int i = 0; i < reqparam.size(); i++) {
+                    String[] rq = reqparam.get(i);
+                    params.put(rq[0], rq[1]);
+                    Log.w("RRR: ", ">< " +rq[0]+" - "+ rq[1]);
+                }
+            }
 
+            params.put("ttt",""+System.currentTimeMillis());
+            Log.w("DataFromSrv: ", ">>> " + reqtype);
             String jsonStr = webreq.makeWebServiceCall(context.getResources().getString(R.string.serviceUrl), WebRequest.POSTRequest, params);
 
             Log.w("Response: ", "> " + jsonStr);
+
             JSONObject jsonObj = new JSONObject(jsonStr);
-            JSONArray values = jsonObj.getJSONArray("yetkili");
+            JSONArray values = jsonObj.getJSONArray("result");
             if(values!=null) {
+                data=new ArrayList<HashMap<String, String>>();
                 for (int i = 0; i < values.length(); i++) {
                     JSONObject c = values.getJSONObject(i);
 
                     HashMap<String, String> tmp = new HashMap<String, String>();
 
-                    tmp.put("id", c.getString("yetkili_id"));
-                    tmp.put("yetkili", c.getString("yetkili"));
+                    if(resp!=null) {
+                        for (int j = 0; j < resp.size(); j++) {
+                            String[] rq = resp.get(j);
+                            tmp.put(rq[0], c.getString(rq[1]));
+                        }
+                    }
 
-                    db.yetkiliEkle(tmp);
+                    data.add(tmp);
                 }
-                db.dbstatDegerEkle("yetkili","fromserver", MainActivity.userid);
+                status=true;
             }
+
         }catch (Exception ex){
-            Log.w("Yetkili", ex.getMessage());
+            Log.w(reqtype+"Online", ex.getMessage());
         }finally {
-            //db.close();
+            status=true;
         }
+
         return null;
     }
     @Override
@@ -92,10 +110,12 @@ public class Yetkili extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(requestresult);
         //db.close();
         if(mCallback!=null) {
-            mCallback.PersonelAsyncFinish(status);
+            mCallback.PipeAsyncFinish(status, reqtype+"Online", data, "");
 
             if (proDialog.isShowing())
                 proDialog.dismiss();
+        }else{
+
         }
     }
 

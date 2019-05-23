@@ -1,4 +1,4 @@
-package guleryuz.puantajonline.synchronize;
+package com.guleryuz.puantajonline.synchronize;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -8,9 +8,9 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import guleryuz.puantajonline.Database;
-import barcodescanner.app.com.barcodescanner.R;
-import guleryuz.puantajonline.WebRequest;
+import com.guleryuz.puantajonline.Database;
+import com.guleryuz.puantajonline.R;
+import com.guleryuz.puantajonline.WebRequest;
 
 /**
  * Created by mehmet_erenoglu on 16.10.2017.

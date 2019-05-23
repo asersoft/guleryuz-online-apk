@@ -170,6 +170,24 @@
                     android:gravity="left|center_vertical"/>
             </LinearLayout>
             <LinearLayout
+                android:background="@drawable/border_personelekleme"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/peRowH"
+                android:orientation="horizontal">
+                <TextView
+                    android:paddingLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/pssskdurumu"/>
+                <TextView android:id="@+id/pesskdurumu"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/layoutPEFoto"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"

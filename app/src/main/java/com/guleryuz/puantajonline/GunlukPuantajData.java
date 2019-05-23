@@ -1,4 +1,4 @@
-package guleryuz.puantajonline;
+package com.guleryuz.puantajonline;
 
 import android.util.Log;
 
@@ -18,6 +18,7 @@ public class GunlukPuantajData implements Serializable{
     private HashMap<String,String> gorevMesai;
     private String gorevSelected, gorevIDSelected;
     private HashMap<String,String> servis;
+    public String[] servisBilgileri ;
     private String sayiDoc1, sayiDoc2, sayiDoc3, sayiAciklama;
     private int calismavar;
     private String kayitdurumu;
@@ -60,9 +61,9 @@ public class GunlukPuantajData implements Serializable{
         this.gorevMesai.put(this.gorevMesai.get(gorev),mesai);
     }
 
-    public void addPersonel(String gorev, String sicilno, String adi, String cinsiyet, String mesai, String kartlaeklendi, String urun){
+    public void addPersonel(String gorev, String sicilno, String adi, String cinsiyet, String mesai, String kartlaeklendi, String urun, String soyadi, String tc, String kartno){
         try {
-            GunlukPersonelData tmp = new GunlukPersonelData(sicilno, adi, cinsiyet, mesai, kartlaeklendi, urun);
+            GunlukPersonelData tmp = new GunlukPersonelData(sicilno, adi, cinsiyet, mesai, kartlaeklendi, urun, soyadi, tc, kartno);
 
             List<GunlukPersonelData> tmp2 = this.gorevler.get(gorev);
             if (tmp2==null) {
@@ -122,6 +123,7 @@ public class GunlukPuantajData implements Serializable{
 
             tmp2.add(tmp);
             this.gorevler.put(gorev, tmp2);
+            MainActivity.sendPersonels2Server();
             stat=true;
         }catch (Exception ex){
             stat=false;
@@ -146,6 +148,7 @@ public class GunlukPuantajData implements Serializable{
                     tmp2.remove(ind);
                     this.gorevler.put(gorev, tmp2);
                 }
+                MainActivity.sendPersonels2Server();
             }
 
         }catch (Exception ex){
@@ -158,6 +161,7 @@ public class GunlukPuantajData implements Serializable{
             for (int i=0; i<this.gorevler.get(gorev).size(); i++){
                 this.gorevler.get(gorev).get(i).mesai=mesai;
             }
+            MainActivity.sendPersonels2Server();
         }catch (Exception ex){
             Log.w("GPD-Mesai Guncelle", ex.getMessage());
         }
@@ -275,6 +279,12 @@ public class GunlukPuantajData implements Serializable{
 
     public String getTarih(){
         return tarih;
+    }
+
+    public String getTarihFormatli(){
+        String[] ntarih = tarih.split(" / ");
+        String ttarih= ntarih[2] + "-" + ntarih[1] + "-" + ntarih[0];
+        return ttarih;
     }
 
     public String getFisno(){

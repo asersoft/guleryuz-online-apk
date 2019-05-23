@@ -1,4 +1,4 @@
-package guleryuz.puantajonline;
+package com.guleryuz.puantajonline;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.guleryuz.puantajonline.OnlineService.ServerData;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import java.util.List;
  */
 
 public class Database extends SQLiteOpenHelper{
+    public Context cntxt;
     // Database Version
     private static final int DATABASE_VERSION = 1;
 
@@ -1625,7 +1628,7 @@ public class Database extends SQLiteOpenHelper{
     }
 
 
-    public void personelKartnoUpdate(String kartno, String sicilno, String userid){
+    /*public boolean personelKartnoUpdate(String kartno, String sicilno, String userid){
         SQLiteDatabase db = this.getReadableDatabase();
         try {
             Log.w("personelFotoUpdate", String.format("update tarim_istakip_personel set KARTNO='%s', KARTNO_GUNCELLENDI=1, KARTNO_GUNCEL_AKTARILDI=0 where ID ='%s' and user_id='%s';", kartno, sicilno, userid));
@@ -1635,7 +1638,29 @@ public class Database extends SQLiteOpenHelper{
         }finally {
             //db.close();
         }
-    }
+        boolean stat=false;
+
+        try {
+            List<String[]> req = new ArrayList<String[]>();
+            req.add(new String[]{"op", "pushdatake"});
+            req.add(new String[]{"kartno", kartno});
+            req.add(new String[]{"sicilno", sicilno});
+            req.add(new String[]{"islem", "esleme"});
+            req.add(new String[]{"prgver", MainActivity.PROGRAM_VERSION});
+
+            List<String[]> resp = new ArrayList<String[]>();
+            resp.add(new String[]{"stat", "stat"});
+
+            List<HashMap<String, String>>  kartnoislem = new ServerData(cntxt).getDataFromServer(MainActivity.userid, "PerKartUpdate", req, resp);
+            if(kartnoislem!=null && kartnoislem.size()>0){
+                stat=true;
+            }
+        }catch (Exception ex){
+            Log.w("PerKartUpdate", ex.getStackTrace().toString());
+        }
+
+        return stat;
+    }*/
 
     public void puantajBilgileriAktarildi(String table, String id, String userid){
         SQLiteDatabase db = this.getReadableDatabase();

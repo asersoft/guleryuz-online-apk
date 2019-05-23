@@ -1,4 +1,4 @@
-package guleryuz.puantajonline.synchronize;
+package com.guleryuz.puantajonline.synchronize;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 
-import guleryuz.puantajonline.MainActivity;
+import com.guleryuz.puantajonline.MainActivity;
 
 /**
  * Created by Asersoft on 8.04.2017.

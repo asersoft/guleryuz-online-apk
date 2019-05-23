@@ -311,6 +311,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/peRowH"
                 android:orientation="horizontal"
+                android:weightSum="1">
+
+                <CheckedTextView
+                    android:text="@string/peonay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/peChkOnay"
+                    android:layout_weight="0.29"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                    android:layout_marginRight="5dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/border_personelekleme"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/peRowH"
+                android:orientation="horizontal"
                 android:weightSum="5">
 
                 <TextView

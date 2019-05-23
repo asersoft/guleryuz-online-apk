@@ -1,4 +1,4 @@
-package guleryuz.puantajonline;
+package com.guleryuz.puantajonline;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,11 +21,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.guleryuz.puantajonline.OnlineService.ServerData;
 
-import java.io.File;
 import java.util.HashMap;
-
-import barcodescanner.app.com.barcodescanner.R;
+import java.util.List;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by Asersoft on 28.02.2017.
@@ -39,9 +39,9 @@ public class GunlukPuantaj2Personel extends AppCompatActivity implements View.On
     private Button btnPSBarkodOku, btnPSBarkodYeni,ibasGorevekle;
     private EditText psBarkod, psTC, psKartno, psAd, psSoyad;
     private TextView psDogumTarihi, psCinsiyet, psGorev, psBolge, psBolge2, psBolge3, psBolge4, psBolge5;
-    private TextView psEkiplideri, psEkiplideri2, psEkiplideri3,personelSorgulama, pssgkevrak;
+    private TextView psEkiplideri, psEkiplideri2, psEkiplideri3,personelSorgulama, pssgkevrak, psSSKDurumu;
     private ImageView psFoto, imgChangeKartno, imgAddPerson;
-    private File imgFile;
+    private String imgFile;
     private static Activity mactivity;
     private static String activeButton;
     private static boolean sorgulamaYapildi=false;
@@ -75,6 +75,7 @@ public class GunlukPuantaj2Personel extends AppCompatActivity implements View.On
         psAd=(EditText)findViewById(R.id.psad);
         psSoyad=(EditText)findViewById(R.id.pssoyad);
         pssgkevrak=(TextView)findViewById(R.id.pssgkevrak);
+        psSSKDurumu=(TextView)findViewById(R.id.pssskdurumu);
         layoutPS=(RelativeLayout)findViewById(R.id.layoutPS);
         btnPSBarkodOku=(Button)findViewById(R.id.psbarkodoku);
         btnPSBarkodOku.setOnClickListener(this);
@@ -95,7 +96,7 @@ public class GunlukPuantaj2Personel extends AppCompatActivity implements View.On
         imgAddPerson.setVisibility(View.VISIBLE);
         imgAddPerson.setOnClickListener(this);
 
-        db=new Database(getApplicationContext());
+        //db=new Database(getApplicationContext());
 
     }
 
@@ -108,6 +109,9 @@ public class GunlukPuantaj2Personel extends AppCompatActivity implements View.On
                 intent.putExtra("sicilno",psBarkod.getText().toString());
                 intent.putExtra("adi",psAd.getText().toString()+" "+psSoyad.getText().toString());
                 intent.putExtra("cinsiyet",psCinsiyet.getText().toString());
+                intent.putExtra("soyad",psSoyad.getText().toString());
+                intent.putExtra("tc",psTC.getText().toString());
+                intent.putExtra("kartno",psKartno.getText().toString());
                 setResult(RESULT_OK,intent);
                 finish();
             }else{
@@ -125,7 +129,7 @@ public class GunlukPuantaj2Personel extends AppCompatActivity implements View.On
                         Log.w("Barcode", "nothing");
                     }
                 } else {
-                    db = new Database(getApplicationContext());
+                    //db = new Database(getApplicationContext());
 
                     String kartnowithpad=psKartno.getText().toString();
                     int padToLength=6;
@@ -133,63 +137,14 @@ public class GunlukPuantaj2Personel extends AppCompatActivity implements View.On
                         kartnowithpad=String.format("%0" + String.valueOf(padToLength - kartnowithpad.length()) + "d%s",0,kartnowithpad);
                     }
 
-                    HashMap<String, String> personelbilgileri = db.personelBilgileriGetir(kartnowithpad, psBarkod.getText().toString(), psTC.getText().toString(), "", psAd.getText().toString(), psSoyad.getText().toString());
-                    if (personelbilgileri.size() > 0) {
+                    //HashMap<String, String> personelbilgileri = db.personelBilgileriGetir(kartnowithpad, psBarkod.getText().toString(), psTC.getText().toString(), "", psAd.getText().toString(), psSoyad.getText().toString());
+                    List<HashMap<String, String>> personelbilgileri = new ServerData(this).personelSorgula(MainActivity.userid, kartnowithpad, psBarkod.getText().toString(),psAd.getText().toString(),psSoyad.getText().toString(),psTC.getText().toString());
+
+                    if (personelbilgileri!=null && personelbilgileri.size() > 0) {
                         sorgulamaYapildi=true;
                         imgChangeKartno.setVisibility(View.VISIBLE);
                         imgChangeKartno.setOnClickListener(this);
-                        psKartno.setText((personelbilgileri.get("KARTNO").equals("0")?"":personelbilgileri.get("KARTNO")));
-                        psBarkod.setText(personelbilgileri.get("ID"));
-                        psTC.setText(personelbilgileri.get("TC"));
-                        psAd.setText(personelbilgileri.get("AD"));
-                        psSoyad.setText(personelbilgileri.get("SOYAD"));
-                        psDogumTarihi.setText(personelbilgileri.get("DOGUMTARIHI"));
-                        psCinsiyet.setText(personelbilgileri.get("CINSIYET"));
-                        psGorev.setText(personelbilgileri.get("GOREV"));
-                        psBolge.setText(personelbilgileri.get("BOLGE"));
-                        psBolge2.setText(personelbilgileri.get("BOLGE2"));
-                        psBolge3.setText(personelbilgileri.get("BOLGE3"));
-                        psBolge4.setText(personelbilgileri.get("BOLGE4"));
-                        psBolge5.setText(personelbilgileri.get("BOLGE5"));
-                        psEkiplideri.setText(personelbilgileri.get("EKIP_LIDERI"));
-                        psEkiplideri2.setText(personelbilgileri.get("EKIP_LIDERI2"));
-                        psEkiplideri3.setText(personelbilgileri.get("EKIP_LIDERI3"));
-
-                        if (personelbilgileri.get("RESIM_INDIRILDI").equals("1")) {
-                            imgFile = new File(Environment.getExternalStorageDirectory() + "/"+MainActivity.rootDir+"/" + personelbilgileri.get("RESIM"));
-
-                            if (imgFile.exists()) {
-                                BitmapFactory.Options options = new BitmapFactory.Options();
-                                options.inSampleSize = 4;
-                                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(),options);
-                                psFoto.setImageBitmap(myBitmap);
-                                psFoto.setOnClickListener(this);
-                                layoutPSFoto.setVisibility(View.VISIBLE);
-                            } else {
-                                layoutPSFoto.setVisibility(View.GONE);
-                                psFoto.setImageBitmap(null);
-                            }
-                        } else {
-                            imgFile=null;
-                            layoutPSFoto.setVisibility(View.GONE);
-                            psFoto.setImageBitmap(null);
-                        }
-
-                        Log.w("here",personelbilgileri.get("RESIM_INDIRILDI"));
-                        if (personelbilgileri.get("SGK_EVRAK_INDIRILDI").equals("1")) {
-                            SGK_Evrak=personelbilgileri.get("SGK_EVRAK");
-                            pssgkevrak.setText("Var. (Görüntüle)");
-                            pssgkevrak.setOnClickListener(this);
-                        }else{
-                            SGK_Evrak="";
-                            pssgkevrak.setOnClickListener(null);
-                            if(personelbilgileri.containsKey("SGK_EVRAK") && (personelbilgileri.get("SGK_EVRAK")==null || personelbilgileri.get("SGK_EVRAK").equals(""))){
-                                pssgkevrak.setText("Yok");
-                            }else{
-                                pssgkevrak.setText("Evrak var. İndirilmemiş.");
-                            }
-                        }
-
+                        personelBilgisiGoster(personelbilgileri);
                     } else {
                         new ShowToast(this, "Personel bilgisi bulunmadı.");
                     }
@@ -216,9 +171,11 @@ public class GunlukPuantaj2Personel extends AppCompatActivity implements View.On
             psEkiplideri2.setText("");
             psEkiplideri3.setText("");
             pssgkevrak.setText("");
+            psSSKDurumu.setText("");
             layoutPSFoto.setVisibility(View.GONE);
             psFoto.setImageBitmap(null);
             imgChangeKartno.setVisibility(View.GONE);
+            imgFile="";
             activeButton="";
         }else if(v.getId()==R.id.imgChangeKartno){
             activeButton="imgChangeKartno";
@@ -253,9 +210,9 @@ public class GunlukPuantaj2Personel extends AppCompatActivity implements View.On
         }else  if(v.getId()==R.id.ibasGorevEkle){
 
         }else if(v.getId()==R.id.psFoto){
-            if(imgFile!=null) {
+            if(imgFile!="") {
                 Intent intent = new Intent(getApplicationContext(), PhotoZoom.class);
-                intent.putExtra("photo", imgFile.getAbsolutePath());
+                intent.putExtra("photo", this.getResources().getString(R.string.docUrl) + imgFile);
                 startActivity(intent);
             }
         }else if(v.getId()==R.id.imgAddPerson){
@@ -263,7 +220,34 @@ public class GunlukPuantaj2Personel extends AppCompatActivity implements View.On
             i.putExtra("userid", MainActivity.userid);
             startActivity(i);
         }else if(v.getId()==R.id.pssgkevrak) {
-            if (!SGK_Evrak.equals("")){
+            if (!SGK_Evrak.equals("")) {
+                if (SGK_Evrak.toLowerCase().indexOf(".pdf") > 0) {
+                    //File sgkevrakFile = new  File(Environment.getExternalStorageDirectory() + "/"+MainActivity.rootDir+"/"+MainActivity.sgkDir+"/"+SGK_Evrak);
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.parse(this.getResources().getString(R.string.docUrl)  + SGK_Evrak), "application/pdf");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivity(intent);
+                    /*File sgkevrakFile = new  File(Environment.getExternalStorageDirectory() + "/"+MainActivity.rootDir+"/"+MainActivity.sgkDir+"/"+SGK_Evrak);
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.fromFile(sgkevrakFile), "application/pdf");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivity(intent);*/
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), PhotoZoom.class);
+                    intent.putExtra("photo", this.getResources().getString(R.string.docUrl) + SGK_Evrak);
+                    startActivity(intent);
+
+                    /*File sgkevrakFile = new  File(Environment.getExternalStorageDirectory() + "/"+MainActivity.rootDir+"/"+MainActivity.sgkDir+"/"+SGK_Evrak);
+                    if(sgkevrakFile.isFile()) {
+                        Intent intent = new Intent(getApplicationContext(), PhotoZoom.class);
+                        intent.putExtra("photo", sgkevrakFile.getAbsolutePath());
+                        startActivity(intent);
+                    }else{
+                        new ShowToast(this, "SGK Evrak dosyası bulunamadı");
+                    }*/
+                }
+            }
+            /*if (!SGK_Evrak.equals("")){
                 if(SGK_Evrak.toLowerCase().indexOf(".pdf")>0){
                     File sgkevrakFile = new  File(Environment.getExternalStorageDirectory() + "/"+MainActivity.rootDir+"/"+MainActivity.sgkDir+"/"+SGK_Evrak);
                     Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -280,8 +264,12 @@ public class GunlukPuantaj2Personel extends AppCompatActivity implements View.On
                         new ShowToast(this, "SGK Evrak dosyası bulunamadı");
                     }
                 }
-            }
+            }*/
         }
+    }
+
+    public GunlukPuantaj2Personel() {
+        super();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -291,68 +279,17 @@ public class GunlukPuantaj2Personel extends AppCompatActivity implements View.On
                 String scanContent = scanningResult.getContents();
                 if (activeButton.equals("PSorgula")) {
                     psKartno.setText(scanContent);
-                    db = new Database(getApplicationContext());
+                    //db = new Database(getApplicationContext());
                     //Log.w("onActivityResult", scanContent+" "+userid);
-                    if (db.barkodDogrula(scanContent, MainActivity.userid)) {
-                        HashMap<String, String> personelbilgileri = db.personelBilgileriGetir(scanContent);
-                        if (personelbilgileri.size() > 0) {
+                    //if (db.barkodDogrula(scanContent, MainActivity.userid)) {
+                    List<HashMap<String, String>> personelbilgileri = new ServerData(this).personelSorgula(MainActivity.userid, scanContent, "","","","");
+                    if (personelbilgileri!=null) {
+                        //HashMap<String, String> personelbilgileri = db.personelBilgileriGetir(scanContent);
+                        if ( personelbilgileri.size() > 0) {
                             sorgulamaYapildi=true;
                             imgChangeKartno.setVisibility(View.VISIBLE);
                             imgChangeKartno.setOnClickListener(this);
-                            psKartno.setText((personelbilgileri.get("KARTNO").equals("0") ? "" : personelbilgileri.get("KARTNO")));
-                            psBarkod.setText(personelbilgileri.get("ID"));
-                            psTC.setText(personelbilgileri.get("TC"));
-                            psAd.setText(personelbilgileri.get("AD"));
-                            psSoyad.setText(personelbilgileri.get("SOYAD"));
-                            psDogumTarihi.setText(personelbilgileri.get("DOGUMTARIHI"));
-                            psCinsiyet.setText(personelbilgileri.get("CINSIYET"));
-                            psGorev.setText(personelbilgileri.get("GOREV"));
-                            psBolge.setText(personelbilgileri.get("BOLGE"));
-                            psBolge2.setText(personelbilgileri.get("BOLGE2"));
-                            psBolge3.setText(personelbilgileri.get("BOLGE3"));
-                            psBolge4.setText(personelbilgileri.get("BOLGE4"));
-                            psBolge5.setText(personelbilgileri.get("BOLGE5"));
-                            psEkiplideri.setText(personelbilgileri.get("EKIP_LIDERI"));
-                            psEkiplideri2.setText(personelbilgileri.get("EKIP_LIDERI2"));
-                            psEkiplideri3.setText(personelbilgileri.get("EKIP_LIDERI3"));
-                            try {
-                                if (personelbilgileri.get("RESIM_INDIRILDI").equals("1")) {
-                                    imgFile = new File(Environment.getExternalStorageDirectory() + "/" + MainActivity.rootDir + "/" + personelbilgileri.get("RESIM"));
-
-                                    if (imgFile.exists()) {
-                                        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                                        psFoto.setImageBitmap(myBitmap);
-                                        psFoto.setOnClickListener(this);
-                                        layoutPSFoto.setVisibility(View.VISIBLE);
-                                    } else {
-                                        layoutPSFoto.setVisibility(View.GONE);
-                                        psFoto.setImageBitmap(null);
-                                    }
-                                } else {
-                                    imgFile = null;
-                                    layoutPSFoto.setVisibility(View.GONE);
-                                    psFoto.setImageBitmap(null);
-                                }
-                            }catch (Exception ex){
-                                imgFile = null;
-                                layoutPSFoto.setVisibility(View.GONE);
-                                psFoto.setImageBitmap(null);
-                            }
-
-                            Log.w("here",personelbilgileri.get("RESIM_INDIRILDI"));
-                            if (personelbilgileri.get("SGK_EVRAK_INDIRILDI").equals("1")) {
-                                SGK_Evrak=personelbilgileri.get("SGK_EVRAK");
-                                pssgkevrak.setText("Var. (Görüntüle)");
-                                pssgkevrak.setOnClickListener(this);
-                            }else{
-                                SGK_Evrak="";
-                                pssgkevrak.setOnClickListener(null);
-                                if(personelbilgileri.containsKey("SGK_EVRAK") && (personelbilgileri.get("SGK_EVRAK")==null || personelbilgileri.get("SGK_EVRAK").equals(""))){
-                                    pssgkevrak.setText("Yok");
-                                }else{
-                                    pssgkevrak.setText("Evrak var. İndirilmemiş.");
-                                }
-                            }
+                            personelBilgisiGoster(personelbilgileri);
                         } else {
                             imgChangeKartno.setVisibility(View.GONE);
                             //Toast toast = Toast.makeText(this, "Personel bilgisi bulunmadı.", Toast.LENGTH_SHORT);
@@ -418,20 +355,107 @@ public class GunlukPuantaj2Personel extends AppCompatActivity implements View.On
 
                 } else if (activeButton.equals("imgChangeKartno")) {
                     if(scanContent!=null) {
-                        db = new Database(getApplicationContext());
-                        HashMap<String, String> kartno = db.getOneRow(new String[]{"ID", "AD", "SOYAD"}, "tarim_istakip_personel", "kartno='" + scanContent + "'");
-                        if (kartno.size() == 0) {
-                            psKartno.setText(scanContent);
-                            db.personelKartnoUpdate(scanContent, psBarkod.getText().toString(), MainActivity.userid);
-                            new ShowToast(this, psAd.getText()+ " "+psSoyad.getText() + " için " + scanContent + " kart nosu tanımlanmıştır.");
+                        ServerData sd=new ServerData(this);
+                        List<HashMap<String, String>> kartno= sd.personelSorgula(MainActivity.userid,scanContent, "","","","");
+
+                        //HashMap<String, String> kartno = db.getOneRow(new String[]{"ID", "AD", "SOYAD"}, "tarim_istakip_personel", "kartno='" + scanContent + "'");
+                        if (kartno==null || kartno.size() == 0) {
+                            psKartno.setText("");
+                            if(sd.personelKartnoUpdate(MainActivity.userid, scanContent, psBarkod.getText().toString(),"esleme", MainActivity.PROGRAM_VERSION)) {
+                                new ShowToast(this, psAd.getText() + " " + psSoyad.getText() + " için " + scanContent + " kart nosu tanımlanmıştır.");
+                                psKartno.setText(scanContent);
+                            }else
+                                new ShowToast(this, "Eşleştirmede hata oluştu");
                         } else {
-                            new ShowToast(this, "Hata: Okutulan kart no " + kartno.get("AD").toString() + " " + kartno.get("SOYAD").toString() + " tanımlı.");
+                            new ShowToast(this, "Hata: Okutulan kart no " + kartno.get(0).get("AD").toString() + " " + kartno.get(0).get("SOYAD").toString() + " tanımlı.");
                         }
                     }
                 }
             }
         }catch (Exception ex){
             //Log.w("onActivityResult", ex.getMessage());
+        }
+    }
+
+    private void personelBilgisiGoster(List<HashMap<String,String>> personelbilgileri)
+    {
+        psKartno.setText((personelbilgileri.get(0).get("KARTNO").equals("0")?"":personelbilgileri.get(0).get("KARTNO")));
+        psBarkod.setText(personelbilgileri.get(0).get("ID"));
+        psTC.setText(personelbilgileri.get(0).get("TC"));
+        psAd.setText(personelbilgileri.get(0).get("AD"));
+        psSoyad.setText(personelbilgileri.get(0).get("SOYAD"));
+        psDogumTarihi.setText(personelbilgileri.get(0).get("DOGUMTARIHI"));
+        psCinsiyet.setText(personelbilgileri.get(0).get("CINSIYET"));
+        psGorev.setText(personelbilgileri.get(0).get("GOREV"));
+        psBolge.setText(personelbilgileri.get(0).get("BOLGE"));
+        psBolge2.setText(personelbilgileri.get(0).get("BOLGE2"));
+        psBolge3.setText(personelbilgileri.get(0).get("BOLGE3"));
+        psBolge4.setText(personelbilgileri.get(0).get("BOLGE4"));
+        psBolge5.setText(personelbilgileri.get(0).get("BOLGE5"));
+        psEkiplideri.setText(personelbilgileri.get(0).get("EKIP_LIDERI"));
+        psEkiplideri2.setText(personelbilgileri.get(0).get("EKIP_LIDERI2"));
+        psEkiplideri3.setText(personelbilgileri.get(0).get("EKIP_LIDERI3"));
+
+        String sskdurumu="";
+        if(personelbilgileri.get(0).get("DEVAM").equals("0")){
+            sskdurumu="Personel Pasif";
+        }else{
+            switch (personelbilgileri.get(0).get("SSK")){
+                case "2":
+                    switch (personelbilgileri.get(0).get("SSK_CIKIS")){
+                        case "1":
+                            sskdurumu="Çıkış Yapıldı.";
+                            break;
+                        case "0":
+                            sskdurumu="Çıkış Beklemede.";
+                    }
+                    break;
+                case "1":
+                    sskdurumu="SSK Yapıldı.";
+                    break;
+                case "0":
+                    sskdurumu="Giriş Beklemede.";
+                    break;
+                case "-1":
+                    sskdurumu="Giriş Beklemede.";
+                    break;
+            }
+
+        }
+        psSSKDurumu.setText(sskdurumu);
+
+        try {
+            if (personelbilgileri.get(0).get("RESIM")!=null && personelbilgileri.get(0).get("RESIM").length()>0) {
+                psFoto.requestLayout();
+                imgFile=personelbilgileri.get(0).get("RESIM");
+                Picasso.get()
+                        .load(this.getResources().getString(R.string.docUrl) +personelbilgileri.get(0).get("RESIM"))
+                        .into(psFoto);
+
+                psFoto.setOnClickListener(this);
+                layoutPSFoto.setVisibility(View.VISIBLE);
+
+
+            } else {
+                layoutPSFoto.setVisibility(View.GONE);
+                psFoto.setImageBitmap(null);
+                imgFile="";
+            }
+        }catch (Exception ex){
+            layoutPSFoto.setVisibility(View.GONE);
+            psFoto.setImageBitmap(null);
+        }
+
+        if (personelbilgileri.get(0).get("SGK_EVRAK")!=null && personelbilgileri.get(0).get("SGK_EVRAK").length()>0) {
+            SGK_Evrak = personelbilgileri.get(0).get("SGK_EVRAK");
+            pssgkevrak.setText("Var. (Görüntüle)");
+            pssgkevrak.setOnClickListener(this);
+        }else{
+            SGK_Evrak="";
+            pssgkevrak.setOnClickListener(null);
+            if(personelbilgileri.get(0).containsKey("SGK_EVRAK") && (personelbilgileri.get(0).get("SGK_EVRAK")==null || personelbilgileri.get(0).get("SGK_EVRAK").equals(""))){
+                pssgkevrak.setText("Yok");
+            }
         }
     }
 }

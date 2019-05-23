@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Güleryüz Puantaj Takibi</string>
+    <string name="app_name">Güleryüz Online v2</string>
     <string name="home">Ana Sayfa</string>
     <string name="sorgula">Personel Sorgula</string>
     <string name="gunlukpuantaj">Puantaj Listeleme</string>
@@ -73,6 +73,7 @@
 
     <string name="pecalismaalani">Çalışma Alanı</string>
     <string name="pesigorta">SGK Başlatılsın mı?</string>
+    <string name="peonay">Temsilci Onay</string>
     <string name="pefoto">Foto</string>
     <string name="pebelgeler">Belgeler</string>
 
@@ -97,6 +98,7 @@
     <string name="psekiplideri">Ekip Lideri</string>
     <string name="psekiplideri2">Ekip Lideri 2</string>
     <string name="psekiplideri3">Ekip Lideri 3</string>
+    <string name="pssskdurumu">SSK Durumu</string>
     <string name="psbarkodoku">Sorgula</string>
     <string name="psbarkodyeni">Temizle</string>
     <string name="pskartesletitle">Personel - Kart Eşle</string>
@@ -122,8 +124,9 @@
     <string name="sdsyncpersonel">Personel Gönder</string>
     <string name="sdsync">Tüm Verileri Gönder</string>
 
-    <string name="serviceUrl">http://www.guleryuzcv.net/t_istakip/mobilsrv/vtysv5.php</string>
+    <string name="serviceUrl">https://www.guleryuzcv.net/t_istakip/mobilsrv/vtysv7.php</string>
+    <string name="docUrl">"http://www.guleryuzcv.net/images2/img/15/evrak/"</string>
 
-    <string name="msgInternetNoConnection">İnternet Bağlantınız Bulunmamaktadır</string>
+    <string name="msgInternetNoConnection">İnternet Bağlantınızı Kontrol Ediniz.</string>
 </resources>
 

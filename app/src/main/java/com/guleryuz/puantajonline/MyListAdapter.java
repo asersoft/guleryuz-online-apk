@@ -1,4 +1,4 @@
-package guleryuz.puantajonline;
+package com.guleryuz.puantajonline;
 
 import android.view.ViewGroup;
 
@@ -11,7 +11,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import barcodescanner.app.com.barcodescanner.R;
 
 public class MyListAdapter extends BaseExpandableListAdapter {
 

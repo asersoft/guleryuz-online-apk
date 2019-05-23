@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="barcodescanner.app.com.barcodescanner.barcodescanner.app.com.com.MainActivity">
+    tools:context="com.guleryuz.puantajonline.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -192,7 +192,8 @@
                 android:layout_height="@dimen/buttonsize"
                 android:layout_marginTop="10dp"
                 android:gravity="center_vertical|center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="invisible">
 
                 <Button
                     android:id="@+id/buttonWait"
@@ -224,44 +225,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/llayoutSync"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/buttonsize"
-                android:layout_marginTop="10dp"
-                android:gravity="center_vertical|center_horizontal"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/buttonSync"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/buttonsize"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_weight="2"
-                    android:background="@color/web20c5"
-                    android:padding="5dp"
-                    android:text="@string/bilgileriGonder"
-                    android:visibility="invisible" />
-
-                <Button
-                    android:id="@+id/buttonSyncAl"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/buttonsize"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_weight="2"
-                    android:background="@color/web20c7"
-                    android:padding="5dp"
-                    android:text="@string/bilgileriAl"
-                    android:visibility="invisible" />
-
-            </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/llayoutDuyuru"
@@ -273,7 +236,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/txtsyncInfo"
+                    android:id="@+id/txtBilgilendirme"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal|center_vertical"
@@ -288,15 +251,6 @@
 
                 <include layout="@layout/personel_sorgulama"></include>
             </LinearLayout>
-
-            <ScrollView
-                android:id="@+id/svScrollSync"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:visibility="gone">
-
-                <include layout="@layout/esitleme"></include>
-            </ScrollView>
 
             <include
                 layout="@layout/is_bitirme"

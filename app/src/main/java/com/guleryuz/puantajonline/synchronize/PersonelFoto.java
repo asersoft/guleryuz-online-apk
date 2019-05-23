@@ -1,10 +1,11 @@
-package guleryuz.puantajonline.synchronize;
+package com.guleryuz.puantajonline.synchronize;
 
 import android.content.Context;
 
+import com.guleryuz.puantajonline.Database;
+
 import java.io.File;
 
-import guleryuz.puantajonline.Database;
 
 /**
  * Created by Asersoft on 27.02.2017.

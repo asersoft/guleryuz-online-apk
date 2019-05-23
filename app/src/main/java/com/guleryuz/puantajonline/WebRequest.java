@@ -1,4 +1,6 @@
-package guleryuz.puantajonline;
+package com.guleryuz.puantajonline;
+
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

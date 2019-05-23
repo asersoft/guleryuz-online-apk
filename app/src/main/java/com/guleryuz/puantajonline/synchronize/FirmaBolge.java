@@ -1,4 +1,4 @@
-package guleryuz.puantajonline.synchronize;
+package com.guleryuz.puantajonline.synchronize;
 
 /**
  * Created by Asersoft on 25.02.2017.
@@ -9,16 +9,16 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.guleryuz.puantajonline.CallBacks.TaskCallback;
+import com.guleryuz.puantajonline.Database;
+import com.guleryuz.puantajonline.MainActivity;
+import com.guleryuz.puantajonline.R;
+import com.guleryuz.puantajonline.WebRequest;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-
-import barcodescanner.app.com.barcodescanner.*;
-import guleryuz.puantajonline.CallBacks.TaskCallback;
-import guleryuz.puantajonline.Database;
-import guleryuz.puantajonline.MainActivity;
-import guleryuz.puantajonline.WebRequest;
 
 public class FirmaBolge extends AsyncTask<Void, Void, Void> {
     private TaskCallback mCallback;
@@ -88,7 +88,7 @@ public class FirmaBolge extends AsyncTask<Void, Void, Void> {
             }
 
         }catch (Exception ex){
-            Log.w("FirmaBolge", ex.getMessage());
+            Log.w("FirmaBolgeOnline", ex.getMessage());
         }finally {
             //db.close();
         }

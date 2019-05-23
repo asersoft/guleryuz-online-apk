@@ -1,4 +1,4 @@
-package guleryuz.puantajonline;
+package com.guleryuz.puantajonline;
 
 /**
  * Created by mehmet_erenoglu on 28.02.2017.
@@ -12,7 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import barcodescanner.app.com.barcodescanner.R;
+import com.guleryuz.puantajonline.R;
 
 public class CustomGridPersonelAdapter extends BaseAdapter {
     private Context mContext;

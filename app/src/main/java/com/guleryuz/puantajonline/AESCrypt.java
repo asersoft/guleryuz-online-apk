@@ -1,4 +1,4 @@
-package guleryuz.puantajonline;
+package com.guleryuz.puantajonline;
 
 /**
  * Created by mehmet_erenoglu on 05.05.2017.

@@ -1,4 +1,4 @@
-package guleryuz.puantajonline.CallBacks;
+package com.guleryuz.puantajonline.CallBacks;
 
 /**
  * Created by mehmet_erenoglu on 16.06.2017.

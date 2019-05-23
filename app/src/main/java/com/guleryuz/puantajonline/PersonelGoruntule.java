@@ -1,4 +1,4 @@
-package guleryuz.puantajonline;
+package com.guleryuz.puantajonline;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,22 +15,26 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
+
 import android.os.Handler;
 
-import barcodescanner.app.com.barcodescanner.R;
+import com.guleryuz.puantajonline.OnlineService.ServerData;
+import com.squareup.picasso.Picasso;
+
 
 /**
  * Created by Asersoft on 19.03.2017.
  */
 
 public class PersonelGoruntule extends AppCompatActivity implements View.OnClickListener {
-    private TextView peKartno, peSicilno, peTC, peAd, peSoyad, peDogumTarihi, peCinsiyet, peBolge, peCalismaalani, peEkiplideri;
+    private TextView peKartno, peSicilno, peTC, peAd, peSoyad, peDogumTarihi, peCinsiyet, peBolge, peCalismaalani, peEkiplideri, peSSKDurumu;
     private Button peBtnIptal;
     private ImageView peFoto;
     private LinearLayout layoutPEFoto;
     private File photoFile;
 
-    private Database db;
+
     private static Context ParentCtxt;
 
     @Override
@@ -48,40 +52,73 @@ public class PersonelGoruntule extends AppCompatActivity implements View.OnClick
         peBolge = (TextView) findViewById(R.id.pebolge);
         peCalismaalani = (TextView) findViewById(R.id.pecalismaalani);
         peEkiplideri = (TextView) findViewById(R.id.peekiplideri);
+        peSSKDurumu = (TextView) findViewById(R.id.pesskdurumu);
         peFoto=(ImageView)findViewById(R.id.peFoto);
         layoutPEFoto=(LinearLayout)findViewById(R.id.layoutPEFoto);
 
         Intent intent=getIntent();
         if(intent.hasExtra("kartno")){
-            db=new Database(getApplicationContext());
-            HashMap<String, String> personelbilgileri = db.personelBilgileriGetir(intent.getStringExtra("kartno"),"","","");
-            if (personelbilgileri.size() > 0) {
-                peKartno.setText((personelbilgileri.get("KARTNO").equals("0") ? "" : personelbilgileri.get("KARTNO")));
-                peSicilno.setText(personelbilgileri.get("ID"));
-                peTC.setText(personelbilgileri.get("TC"));
-                peAd.setText(personelbilgileri.get("AD") + " " + personelbilgileri.get("SOYAD"));
-                peDogumTarihi.setText(personelbilgileri.get("DOGUMTARIHI"));
-                peCinsiyet.setText(personelbilgileri.get("CINSIYET"));
-                peBolge.setText(personelbilgileri.get("BOLGE"));
-                peCalismaalani.setText(personelbilgileri.get("BOLGE2"));
-                peEkiplideri.setText(personelbilgileri.get("EKIP_LIDERI"));
-                if (personelbilgileri.get("RESIM_INDIRILDI").equals("1")) {
-                    photoFile = new File(Environment.getExternalStorageDirectory() + "/"+MainActivity.rootDir+"/" + personelbilgileri.get("RESIM"));
+            //db=new Database(getApplicationContext());
+            //HashMap<String, String> personelbilgileri = db.personelBilgileriGetir(intent.getStringExtra("kartno"),"","","");
+            List<HashMap<String, String>> personelbilgileri = new ServerData(this).personelSorgula(MainActivity.userid, intent.getStringExtra("kartno"), "","","","");
 
-                    if (photoFile.exists()) {
-                        Bitmap myBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        peFoto.setImageBitmap(myBitmap);
+            if (personelbilgileri!=null && personelbilgileri.size() > 0) {
+                peKartno.setText((personelbilgileri.get(0).get("KARTNO").equals("0") ? "" : personelbilgileri.get(0).get("KARTNO")));
+                peSicilno.setText(personelbilgileri.get(0).get("ID"));
+                peTC.setText(personelbilgileri.get(0).get("TC"));
+                peAd.setText(personelbilgileri.get(0).get("AD") + " " + personelbilgileri.get(0).get("SOYAD"));
+                peDogumTarihi.setText(personelbilgileri.get(0).get("DOGUMTARIHI"));
+                peCinsiyet.setText(personelbilgileri.get(0).get("CINSIYET"));
+                peBolge.setText(personelbilgileri.get(0).get("BOLGE"));
+                peCalismaalani.setText(personelbilgileri.get(0).get("BOLGE2"));
+                peEkiplideri.setText(personelbilgileri.get(0).get("EKIP_LIDERI"));
+                String sskdurumu="";
+                if(personelbilgileri.get(0).get("DEVAM").equals("0")){
+                    sskdurumu="Personel Pasif";
+                }else{
+                    switch (personelbilgileri.get(0).get("SSK")){
+                        case "2":
+                            switch (personelbilgileri.get(0).get("SSK_CIKIS")){
+                                case "1":
+                                    sskdurumu="Çıkış Yapıldı.";
+                                    break;
+                                case "0":
+                                    sskdurumu="Çıkış Beklemede.";
+                            }
+                            break;
+                        case "1":
+                            sskdurumu="SSK Yapıldı.";
+                            break;
+                        case "0":
+                            sskdurumu="Giriş Beklemede.";
+                            break;
+                        case "-1":
+                            sskdurumu="Giriş Beklemede.";
+                            break;
+                    }
+
+                }
+                peSSKDurumu.setText(sskdurumu);
+
+                try {
+                    if (personelbilgileri.get(0).get("RESIM")!=null && personelbilgileri.get(0).get("RESIM").length()>0) {
+                        peFoto.requestLayout();
+
+                        Picasso.get()
+                                .load(this.getResources().getString(R.string.docUrl) +personelbilgileri.get(0).get("RESIM"))
+                                .into(peFoto);
+
                         peFoto.setOnClickListener(this);
                         layoutPEFoto.setVisibility(View.VISIBLE);
                     } else {
                         layoutPEFoto.setVisibility(View.GONE);
-                        peFoto.setImageBitmap(null);
+                        peFoto.setImageBitmap(null);;
                     }
-                } else {
-                    photoFile=null;
+                }catch (Exception ex){
                     layoutPEFoto.setVisibility(View.GONE);
                     peFoto.setImageBitmap(null);
                 }
+
                 if(intent.hasExtra("shortdisplay")){
                     new Handler().postDelayed(new Runnable() {
                         public void run() {

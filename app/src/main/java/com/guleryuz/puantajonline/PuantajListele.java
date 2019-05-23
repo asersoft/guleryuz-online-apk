@@ -1,4 +1,4 @@
-package guleryuz.puantajonline;
+package com.guleryuz.puantajonline;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -25,13 +26,13 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.guleryuz.puantajonline.CallBacks.DateChangeCallback;
+import com.guleryuz.puantajonline.CallBacks.WebAppInterface;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-
-import guleryuz.puantajonline.CallBacks.DateChangeCallback;
-import barcodescanner.app.com.barcodescanner.R;
 
 /**
  * Created by Asersoft on 5.03.2017.
@@ -46,11 +47,13 @@ public class PuantajListele  extends AppCompatActivity implements View.OnClickLi
     private static TextView plTarih, plFisno, plAciklama, plUrun;
     private static LinearLayout llGorevler, llGorevTitle, llGorevlerShort, llGorevTitleShort, llServisler, llServisTitle, llDoc, llDocTitle, llAckTitle;
     private static int selDay, selMonth, selYear;
-
+    private WebView plWebview;
     private Database db;
     private static Context ParentCtxt;
     private static String userid;
     private static String doc1, doc2, doc3;
+    private static String selectedDate;
+    private Connectivity conn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,33 @@ public class PuantajListele  extends AppCompatActivity implements View.OnClickLi
             userid=b.getString("userid");
         }
 
-        spnplBolge=(Spinner)findViewById(R.id.plbolge);
+        plTarih=(TextView)findViewById(R.id.pltarih);
+        plWebview=(WebView)findViewById(R.id.plWebview);
+        plWebview.addJavascriptInterface(new WebAppInterface(this), "Android");
+        plWebview.getSettings().setJavaScriptEnabled(true);
+
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        selDay=day;
+        selMonth=month;
+        selYear=year;
+        plTarih.setText(day+" / "+(month+1)+" / "+year);
+        plTarih.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment newFragment = new DatePickerFragment();
+                newFragment.show(getFragmentManager(), "datePicker");
+            }
+        });
+        conn=new Connectivity();
+        if (conn.isConnected(getApplicationContext()) || conn.isConnectedMobile(getApplicationContext()) || conn.isConnectedWifi(getApplicationContext())) {
+            plWebview.loadUrl("https://www.guleryuzcv.net/t_istakip/mobilsrv/pliste.php?ttt="+year+"-"+(month+1)+"-"+day+"&uid="+MainActivity.userid);
+        }else{
+            new ShowToast(this, R.string.msgInternetNoConnection);
+        }
+        /*spnplBolge=(Spinner)findViewById(R.id.plbolge);
         spnplCalisma=(Spinner)findViewById(R.id.plcalisma);
         spnplFirma=(Spinner)findViewById(R.id.plfirma);
         spnplYetkili=(Spinner)findViewById(R.id.plyetkili);
@@ -99,7 +128,7 @@ public class PuantajListele  extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-        loadData();
+        loadData();*/
     }
 
     private void loadData(){
@@ -542,7 +571,12 @@ public class PuantajListele  extends AppCompatActivity implements View.OnClickLi
 
     public void DateChangeFinish(boolean stat){//Date changed
         if (stat) {
-            loadData();
+            //loadData();
+            if (conn.isConnected(getApplicationContext()) || conn.isConnectedMobile(getApplicationContext()) || conn.isConnectedWifi(getApplicationContext())) {
+                plWebview.loadUrl("https://www.guleryuzcv.net/t_istakip/mobilsrv/pliste.php?ttt="+selectedDate+"&uid="+MainActivity.userid);
+            }else{
+                new ShowToast(this, R.string.msgInternetNoConnection);
+            }
         }
     }
     private void temizle(){
@@ -592,7 +626,9 @@ public class PuantajListele  extends AppCompatActivity implements View.OnClickLi
             selYear=year;
             selMonth=month;
             selDay=day;
+            selectedDate = year+"-"+(month+1)+"-"+day;
             plTarih.setText(day+" / "+(month+1)+" / "+year);
+
             if(callback!=null) callback.DateChangeFinish(true);
         }
     }

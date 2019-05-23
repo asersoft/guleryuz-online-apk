@@ -1,4 +1,4 @@
-package guleryuz.puantajonline;
+package com.guleryuz.puantajonline;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,6 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.List;
 
-import barcodescanner.app.com.barcodescanner.R;
 
 /**
  * Created by Asersoft on 1.03.2017.

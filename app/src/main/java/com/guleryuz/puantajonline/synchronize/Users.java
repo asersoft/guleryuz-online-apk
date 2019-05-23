@@ -1,4 +1,4 @@
-package guleryuz.puantajonline.synchronize;
+package com.guleryuz.puantajonline.synchronize;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -12,11 +12,11 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.HashMap;
 
-import barcodescanner.app.com.barcodescanner.*;
-import guleryuz.puantajonline.CallBacks.TaskCallback;
-import guleryuz.puantajonline.Database;
-import guleryuz.puantajonline.MainActivity;
-import guleryuz.puantajonline.WebRequest;
+import com.guleryuz.puantajonline.CallBacks.TaskCallback;
+import com.guleryuz.puantajonline.Database;
+import com.guleryuz.puantajonline.MainActivity;
+import com.guleryuz.puantajonline.R;
+import com.guleryuz.puantajonline.WebRequest;
 
 /**
  * Created by Asersoft on 25.02.2017.
@@ -144,7 +144,7 @@ public class Users extends AsyncTask<Void, Void, Void>{
         protected void onPostExecute(Void requestresult) {
             super.onPostExecute(requestresult);
             if(mCallback!=null) {
-                mCallback.UserAsyncFinish(status, error);
+                mCallback.UserAsyncFinish(status, "", "", error);
 
                 if (proDialog!=null && proDialog.isShowing())
                     proDialog.dismiss();

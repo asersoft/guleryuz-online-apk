@@ -1,4 +1,4 @@
-package guleryuz.puantajonline;
+package com.guleryuz.puantajonline;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,27 +18,33 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.guleryuz.puantajonline.CallBacks.ServiceCallBack;
+import com.guleryuz.puantajonline.OnlineService.DataFromService;
+import com.guleryuz.puantajonline.OnlineService.UploadFileToServer;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
-import barcodescanner.app.com.barcodescanner.R;
 
 /**
  * Created by mehmet_erenoglu on 01.03.2017.
  */
 
-public class GunlukPuantaj4 extends AppCompatActivity implements View.OnClickListener {
+public class GunlukPuantaj4 extends AppCompatActivity implements View.OnClickListener, ServiceCallBack {
     private LinearLayout ibasLayout;
     private Button btnIbas3Kontrol1,btnIbas3Kontrol2,btnIbas3Kontrol3;
     private Button ibasBtnSonraki,ibasBtnIptal,ibasBtnOnceki;
     private ImageView ibas3Image1, ibas3Image2, ibas3Image3;
     private ImageView ibasEk1del, ibasEk2del, ibasEk3del;
     private EditText ibas4Aciklama;
-    private Database db;
+    //private Database db;
     private EditText ibasFisno;
     private static Context ParentCtxt;
     static final int REQUEST_TAKE_PHOTO1 = 1;
@@ -121,7 +127,7 @@ public class GunlukPuantaj4 extends AppCompatActivity implements View.OnClickLis
                 ibasEk3del.setVisibility(View.VISIBLE);
             }
 
-            if (MainActivity.gpd.getAciklama()!=null){
+            if (MainActivity.gpd.getAciklama()!=null && !MainActivity.gpd.getAciklama().equals("null")){
                 ibas4Aciklama.setText(MainActivity.gpd.getAciklama());
             }
         }
@@ -335,19 +341,11 @@ public class GunlukPuantaj4 extends AppCompatActivity implements View.OnClickLis
                     imgFile3=ekPath+imgFile3;*/
                 }
                 MainActivity.gpd.setEkliDoc(imgFile1, imgFile2, imgFile3, ibas4Aciklama.getText().toString());
-                db=new Database(getApplicationContext());
-                String res=db.isbaslamaOnay(MainActivity.gpd, 0);
-                if(res.equals("ok")) {
-                    new ShowToast(this, "Günlük Puantaj Başarıyla Oluşturulmuştur.");
-                    Intent intent = new Intent();
-                    intent.putExtra("exit", "exit");
-                    intent.putExtra("status", "success");
-                    setResult(RESULT_OK, intent);
-                    finish();
-                }else{
-                    new ShowToast(ParentCtxt, res);
-                }
-            }else{
+
+
+
+            }
+            /*else{
                 db=new Database(getApplicationContext());
                 MainActivity.gpd.setEkliDoc(null, null, null, ibas4Aciklama.getText().toString());
                 String res=db.isbaslamaOnay(MainActivity.gpd, 0);
@@ -356,19 +354,9 @@ public class GunlukPuantaj4 extends AppCompatActivity implements View.OnClickLis
                 intent.putExtra("status", "success");
                 setResult(RESULT_OK, intent);
                 finish();
-                /*MainActivity.gpd.setEkliDoc(null, null, null, ibas4Aciklama.getText().toString());
-                   String res=db.isbaslamaOnay(MainActivity.gpd, -1);
-                if(res.equals("ok")) {
-                    new ShowToast(ParentCtxt, "Günlük Puantaj Başarıyla Oluşturulmuştur. Puantaj Gönderimi yapılması için en az 1 adet sayı formunun eklenmesi gerekmektedir!");
-                    Intent intent = new Intent();
-                    intent.putExtra("exit", "exit");
-                    intent.putExtra("status", "success");
-                    setResult(RESULT_OK, intent);
-                    finish();
-                }else{
-                    new ShowToast(ParentCtxt, res);
-                }*/
-            }
+            }*/
+
+            puantajGonder();
         }
     }
 
@@ -432,5 +420,120 @@ public class GunlukPuantaj4 extends AppCompatActivity implements View.OnClickLis
 
         }
         return imgf;
+    }
+
+    private void puantajGonder(){
+        try {
+            DataFromService puantajsrv = new DataFromService(this);
+            puantajsrv.context=ParentCtxt;
+            puantajsrv.uid=MainActivity.userid;
+            puantajsrv.reqtype="PuantajGonder";
+            puantajsrv.title="Puantaj";
+            puantajsrv.reqparam=new ArrayList<String[]>();
+            puantajsrv.reqparam.add(new String[]{"op", "pushdata2"});
+            puantajsrv.reqparam.add(new String[]{"prgver", MainActivity.PROGRAM_VERSION});
+            puantajsrv.reqparam.add(new String[]{"firmaid", MainActivity.gpd.getFirma()});
+            puantajsrv.reqparam.add(new String[]{"bolge2", MainActivity.gpd.getBolge()});
+            puantajsrv.reqparam.add(new String[]{"bolge", MainActivity.gpd.getCalismaalani()});
+            puantajsrv.reqparam.add(new String[]{"yetkili", MainActivity.gpd.getYetkili()});
+            puantajsrv.reqparam.add(new String[]{"ekiplideri", MainActivity.gpd.getEkiplideri()});
+            puantajsrv.reqparam.add(new String[]{"calismavar", ""+MainActivity.gpd.getCalismavar()});
+            puantajsrv.reqparam.add(new String[]{"globalid", MainActivity.gpd.getGlobalid()});
+            puantajsrv.reqparam.add(new String[]{"fisno", MainActivity.gpd.getFisno()});
+            puantajsrv.reqparam.add(new String[]{"isebastarihi", MainActivity.gpd.getTarih()});
+            puantajsrv.reqparam.add(new String[]{"urun", MainActivity.gpd.getUrun()});
+
+            String puantaj = "{\"psayi\":\"1\",\"puantaj\":[";
+
+            String jsonservis="";
+            HashMap<String,String> servis=MainActivity.gpd.getServis();
+            for(int i=1; i<21; i++){
+                jsonservis+="\"servis"+i+"sayi\":\""+servis.get(""+(i-1))+"\","+"\"servis"+i+"\":\""+MainActivity.gpd.servisBilgileri[i-1]+"\"";
+                if (i < 20) {
+                    jsonservis += ",";
+                }
+            }
+
+            HashMap<String, List<GunlukPersonelData>> gorevler = MainActivity.gpd.getGorevler();
+            String jsongorev = "";
+            for ( String key : gorevler.keySet() ) {
+                List<GunlukPersonelData> gperd = gorevler.get(key);
+                for (int i=0; i<gperd.size(); i++) {
+                    jsongorev += "{\"globalid\":\"" + MainActivity.gpd.getGlobalid() + "\",\"sicilno\":\"" + gperd.get(i).sicilno + "\",\"urunid\":\"" + gperd.get(i).urun + "\",\"gorev\":\"" + key + "\",\"mesai\":\"" + gperd.get(i).mesai + "\",\"kartokutma\":\"" + gperd.get(i).kartlaeklendi + "\",\"kartno\":\"" + gperd.get(i).kartno + "\",\"tc\":\"" + gperd.get(i).tc + "\",\"ad\":\"" + gperd.get(i).adi.replace(" "+gperd.get(i).soyadi,"") + "\",\"soyad\":\"" + gperd.get(i).soyadi + "\",\"cinsiyet\":\"" + gperd.get(i).cinsiyet + "\"},";
+                }
+            }
+            jsongorev = jsongorev.substring(0,jsongorev.length()-1);
+
+            String ek1 = "", ek2 = "", ek3 = "";
+            if (MainActivity.gpd.getSayiDoc1() != null && !MainActivity.gpd.getSayiDoc1().equals("")) {
+                ek1 = MainActivity.gpd.getSayiDoc1();
+                ek1 = ek1.substring(ek1.lastIndexOf('/') + 1);
+                UploadFileToServer f2s=new UploadFileToServer(this);
+                f2s.context=this;
+                f2s.uid=MainActivity.userid;
+                f2s.reqtype="Sayı Kontrol 1";
+                f2s.uFile=MainActivity.gpd.getSayiDoc1();
+                f2s.execute();
+            }
+
+            if (MainActivity.gpd.getSayiDoc2() != null && !MainActivity.gpd.getSayiDoc2().equals("")) {
+                ek2 = MainActivity.gpd.getSayiDoc2();
+                ek2 = ek2.substring(ek2.lastIndexOf('/') + 1);
+                UploadFileToServer f2s=new UploadFileToServer(this);
+                f2s.context=this;
+                f2s.uid=MainActivity.userid;
+                f2s.reqtype="Sayı Kontrol 2";
+                f2s.uFile=MainActivity.gpd.getSayiDoc2();
+                f2s.execute();
+            }
+
+            if (MainActivity.gpd.getSayiDoc3() != null && !MainActivity.gpd.getSayiDoc3().equals("")) {
+                ek3 = MainActivity.gpd.getSayiDoc3();
+                ek3 = ek3.substring(ek3.lastIndexOf('/') + 1);
+                UploadFileToServer f2s=new UploadFileToServer(this);
+                f2s.context=this;
+                f2s.uid=MainActivity.userid;
+                f2s.reqtype="Sayı Kontrol 3";
+                f2s.uFile=MainActivity.gpd.getSayiDoc3();
+                f2s.execute();
+            }
+            String[] ntarih = MainActivity.gpd.getTarih().toString().split(" / ");
+            String ttarih= ntarih[2] + "-" + ntarih[1] + "-" + ntarih[0];
+
+            puantaj += "{\"globalid\":\""+ MainActivity.gpd.getGlobalid() +"\",\"ibt\":\"" +  MainActivity.gpd.getTarih() + "\",\"ibt2\":\""+ttarih+"\",\"calismavar\":\"" + MainActivity.gpd.getCalismavar() + "\",\"uid\":\"" + MainActivity.userid + "\",\"firma\":\"" + MainActivity.gpd.getFirma() + "\",\"bolge\":\"" + MainActivity.gpd.getBolge() + "\",\"calisma\":\"" + MainActivity.gpd.getCalismaalani() + "\",\"fisno\":\"" + MainActivity.gpd.getFisno() + "\",\"ekiplideri\":\"" + MainActivity.gpd.getEkiplideri() + "\",\"yetkili\":\"" + MainActivity.gpd.getYetkili() + "\",\"servisvar\":\"" + MainActivity.gpd.getServisSayisi() + "\",\"aciklama\":\"" + MainActivity.gpd.getAciklama() + "\",\"ek1\":\"" + ek1 + "\",\"ek2\":\"" + ek2 + "\",\"ek3\":\"" + ek3 + "\",\"urunid\":\"" + MainActivity.gpd.getUrun() + "\",\"gorev\":[" + jsongorev + "],\"servis\":{" + jsonservis + "}}]}";
+            puantajsrv.reqparam.add(new String[]{"gorevjson", "["+jsongorev+"]"});
+            puantajsrv.reqparam.add(new String[]{"servisjson", "{"+jsonservis+"}"});
+            puantajsrv.reqparam.add(new String[]{"puantaj", puantaj});
+            Log.w("puantajGonder", puantaj);
+            puantajsrv.resp=new ArrayList<String[]>();
+            puantajsrv.resp.add(new String[]{"stat", "stat"});
+            puantajsrv.execute();
+
+        }catch (Exception ex){
+            Log.w("puantajGonder", "nothing");
+        }
+
+    }
+
+    @Override
+    public void PipeAsyncFinish(boolean stat, String type, List<HashMap<String, String>> data, String error) {
+        if (type.equals("PuantajGonderOnline")){
+            if(data!=null && data.size()>0 && data.get(0).get("stat").equals("true")) {
+                new ShowToast(this, "Günlük Puantaj Başarıyla Oluşturulmuştur.");
+                Intent intent = new Intent();
+                intent.putExtra("exit", "exit");
+                intent.putExtra("status", "success");
+                setResult(RESULT_OK, intent);
+                finish();
+            }else{
+                new ShowToast(ParentCtxt, "Günlük Puantaj Kaydedilirken Hata Oluştu.");
+            }
+        }else if (type.equals("File2Server")){
+            if (stat)
+                new ShowToast(ParentCtxt, error+" dosyası sisteme aktarıldı.");
+            else
+                new ShowToast(ParentCtxt, error+" dosyası sisteme aktarılırken hata oluştu.");
+
+        }
     }
 }

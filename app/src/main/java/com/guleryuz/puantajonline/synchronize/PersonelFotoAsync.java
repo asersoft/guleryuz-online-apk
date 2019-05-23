@@ -1,4 +1,4 @@
-package guleryuz.puantajonline.synchronize;
+package com.guleryuz.puantajonline.synchronize;
 
 /**
  * Created by Asersoft on 27.02.2017.
@@ -17,16 +17,15 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-import guleryuz.puantajonline.Database;
-
 import android.util.Log;
+
+import com.guleryuz.puantajonline.CallBacks.TaskCallback;
+import com.guleryuz.puantajonline.Database;
+import com.guleryuz.puantajonline.MainActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import guleryuz.puantajonline.MainActivity;
-import guleryuz.puantajonline.CallBacks.TaskCallback;
 
 /**
  * Created by Asersoft on 27.02.2017.
@@ -45,7 +44,7 @@ public class PersonelFotoAsync extends AsyncTask<String, String, String> {
     public PersonelFotoAsync(TaskCallback callback, ArrayList<HashMap<String,String>> r){
         mCallback=callback;
         res=r;
-        photoPath = new File(Environment.getExternalStorageDirectory() + "/"+MainActivity.rootDir+"");
+        photoPath = new File(Environment.getExternalStorageDirectory() + "/"+ MainActivity.rootDir+"");
 
         if (!photoPath.exists()) {
             photoPath.mkdirs();

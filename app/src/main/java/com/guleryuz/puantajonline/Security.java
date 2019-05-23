@@ -1,4 +1,4 @@
-package guleryuz.puantajonline;
+package com.guleryuz.puantajonline;
 
 import java.security.MessageDigest;
 import java.math.BigInteger;

@@ -497,6 +497,27 @@
                     android:layout_height="30dp"></TextView>
             </LinearLayout>
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/border_personelsorgulama"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="3dp"
+                    android:text="@string/pssskdurumu" />
+
+                <TextView
+                    android:id="@+id/pssskdurumu"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"></TextView>
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/layoutPSNufusFoto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
