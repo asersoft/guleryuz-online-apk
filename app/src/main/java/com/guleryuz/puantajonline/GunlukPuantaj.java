@@ -59,6 +59,7 @@ public class GunlukPuantaj extends AppCompatActivity implements View.OnClickList
     private ArrayAdapter<KeyValueP> daIBasFirma, daIBasYetkili, daIBasEkiplideri, daIBasUrun;//, daIBasGorev
     private static String ibasBolge, ibasCalisma, ibasFirma, ibasYetkili, ibasEkipLideri, ibasUrun, ibasEkipLideriAdi;
     private static TextView ibasTarih;
+    private int ekipLideriBolgeKisiti;
     private Button ibasBtnIptal, ibasBtnSonraki, ibasBtnCalismaYok;//btnIBasBarkodOku, btnIBasOnay, btnIBasBarkodYeni;
     static final int REQUEST_GP2=1;
 
@@ -121,6 +122,7 @@ public class GunlukPuantaj extends AppCompatActivity implements View.OnClickList
         ibasYetkili="";
         ibasEkipLideri="";
         ibasUrun="";
+        ekipLideriBolgeKisiti=0;
 
         FirmaOnline firma=new FirmaOnline(this);
         firma.context = this;
@@ -166,7 +168,7 @@ public class GunlukPuantaj extends AppCompatActivity implements View.OnClickList
                     builder.setPositiveButton("Evet", new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int which) {
-                            MainActivity.gpd = new GunlukPuantajData(userid, ibasBolge, ibasCalisma, ibasFirma, ibasYetkili, ibasUrun, ibasEkipLideri, ibasTarih.getText().toString(), ibasFisno, "yenikayit");
+                            MainActivity.gpd = new GunlukPuantajData(userid, ibasBolge, ibasCalisma, ibasFirma, ibasYetkili, ibasUrun, ibasEkipLideri, ekipLideriBolgeKisiti, ibasTarih.getText().toString(), ibasFisno, "yenikayit");
                             MainActivity.gpd.setGlobalid(UUID.randomUUID().toString());
                             MainActivity.gpd.setCalismavar(0);
 
@@ -310,7 +312,7 @@ public class GunlukPuantaj extends AppCompatActivity implements View.OnClickList
                         builder.setPositiveButton("Evet", new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int which) {
-                                MainActivity.gpd = new GunlukPuantajData(userid, ibasBolge, ibasCalisma, ibasFirma, ibasYetkili, ibasUrun, ibasEkipLideri, ibasTarih.getText().toString(), ibasFisno, "guncelleme");
+                                MainActivity.gpd = new GunlukPuantajData(userid, ibasBolge, ibasCalisma, ibasFirma, ibasYetkili, ibasUrun, ibasEkipLideri, ekipLideriBolgeKisiti, ibasTarih.getText().toString(), ibasFisno, "guncelleme");
 
                                 ibasBtnSonraki.callOnClick();
                                 dialog.dismiss();
@@ -329,7 +331,7 @@ public class GunlukPuantaj extends AppCompatActivity implements View.OnClickList
                         alert.show();
                     }
                 } else {
-                    MainActivity.gpd = new GunlukPuantajData(userid, ibasBolge, ibasCalisma, ibasFirma, ibasYetkili, ibasUrun, ibasEkipLideri, ibasTarih.getText().toString(), ibasFisno, "yenikayit");
+                    MainActivity.gpd = new GunlukPuantajData(userid, ibasBolge, ibasCalisma, ibasFirma, ibasYetkili, ibasUrun, ibasEkipLideri, ekipLideriBolgeKisiti, ibasTarih.getText().toString(), ibasFisno, "yenikayit");
                     MainActivity.gpd.setGlobalid(UUID.randomUUID().toString());
                     req=new ArrayList<String[]>();
                     req.add(new String[]{"op","gorev"});
@@ -642,6 +644,7 @@ public class GunlukPuantaj extends AppCompatActivity implements View.OnClickList
                             ekiplideri.param1=new String[]{"calisma",ibasCalisma};
                             ekiplideri.resp1=new String[]{"id","id"};
                             ekiplideri.resp2=new String[]{"name","name"};
+                            ekiplideri.resp3=new String[]{"bolgekisiti","bolgekisiti"};
                             ekiplideri.execute();
                         }
                     }
@@ -712,7 +715,7 @@ public class GunlukPuantaj extends AppCompatActivity implements View.OnClickList
                 List<KeyValueP> res = new ArrayList<KeyValueP>();
                 //res.add("Seçiniz");
                 for (int i = 0; i < data.size(); i++) {
-                    res.add(new KeyValueP(data.get(i).get("id"),data.get(i).get("name")));
+                    res.add(new KeyValueP(data.get(i).get("id"),data.get(i).get("name"),(data.get(i).get("bolgekisiti").equals("0")?0:1)));
                 }
 
                 //fill ekiplideri
@@ -724,6 +727,7 @@ public class GunlukPuantaj extends AppCompatActivity implements View.OnClickList
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         ibasEkipLideri=daIBasEkiplideri.getItem(adapterView.getSelectedItemPosition()).ID;
                         ibasEkipLideriAdi=daIBasEkiplideri.getItem(adapterView.getSelectedItemPosition()).name;
+                        ekipLideriBolgeKisiti=daIBasEkiplideri.getItem(adapterView.getSelectedItemPosition()).param;
 
                         DataFromService gorevGetir=new DataFromService(thisActivity);
                         gorevGetir.context=ParentCtxt;

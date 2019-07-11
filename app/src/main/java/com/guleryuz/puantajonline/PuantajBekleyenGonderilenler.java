@@ -105,7 +105,7 @@ public class PuantajBekleyenGonderilenler extends AppCompatActivity implements V
                     TextView wsTarih = (TextView) layouts.findViewById(R.id.wsTarih);
                     wsTarih.setText("" + res.get(i).get("tarih"));
 
-                    final HashMap<String, String> calisma=db.getOneRow(new String[]{"OID","FIRMA", "BOLGE", "CALISMA", "EKIP_LIDERI", "URUN", "YETKILI","ISE_BASLAMA_TARIHI","SERVISVAR","ACIKLAMA","EKLIDOC1","EKLIDOC2","EKLIDOC3","FISNO","CALISMAVAR","GLOBALID"},"tarim_istakip_calisma", "GLOBALID='"+ res.get(i).get("globalid")+"' and globalid is not null AND USER_ID="+MainActivity.userid);
+                    final HashMap<String, String> calisma=db.getOneRow(new String[]{"OID","FIRMA", "BOLGE", "CALISMA", "EKIP_LIDERI", "URUN", "YETKILI","ISE_BASLAMA_TARIHI","SERVISVAR","ACIKLAMA","EKLIDOC1","EKLIDOC2","EKLIDOC3","FISNO","CALISMAVAR","GLOBALID, EL_BOLGEKISITI"},"tarim_istakip_calisma", "GLOBALID='"+ res.get(i).get("globalid")+"' and globalid is not null AND USER_ID="+MainActivity.userid);
                     TextView wsFisno = (TextView) layouts.findViewById(R.id.wsFisno);
                     String fisno=res.get(i).get("fisno");
                     if(fisno.length()==36){
@@ -125,7 +125,7 @@ public class PuantajBekleyenGonderilenler extends AppCompatActivity implements V
                                         public void onClick(DialogInterface dialog, int which) {
                                             String[] ntarih = calisma.get("ISE_BASLAMA_TARIHI").split("-");
                                             Log.w("tarih", ntarih[2] + " / " + ntarih[1] + " / " + ntarih[0]);
-                                            MainActivity.gpd = new GunlukPuantajData(MainActivity.userid, calisma.get("BOLGE"), calisma.get("CALISMA"), calisma.get("FIRMA"), calisma.get("YETKILI"), calisma.get("URUN"), calisma.get("EKIP_LIDERI"), ntarih[2] + " / " + ntarih[1] + " / " + ntarih[0], calisma.get("FISNO"), "guncelleme");
+                                            MainActivity.gpd = new GunlukPuantajData(MainActivity.userid, calisma.get("BOLGE"), calisma.get("CALISMA"), calisma.get("FIRMA"), calisma.get("YETKILI"), calisma.get("URUN"), calisma.get("EKIP_LIDERI"), (calisma.get("EL_BOLGEKISITI").equals("0")?0:1), ntarih[2] + " / " + ntarih[1] + " / " + ntarih[0], calisma.get("FISNO"), "guncelleme");
                                             MainActivity.gpd.setGlobalid(calisma.get("GLOBALID"));
                                             MainActivity.gpd.setEkliDoc(calisma.get("EKLIDOC1"), calisma.get("EKLIDOC2"), calisma.get("EKLIDOC3"), calisma.get("ACIKLAMA"));
 
@@ -231,7 +231,7 @@ public class PuantajBekleyenGonderilenler extends AppCompatActivity implements V
                                             public void onClick(DialogInterface dialog, int which) {
                                                 String[] ntarih = calisma.get("ISE_BASLAMA_TARIHI").split("-");
                                                 Log.w("tarih", ntarih[2] + " / " + ntarih[1] + " / " + ntarih[0]);
-                                                MainActivity.gpd = new GunlukPuantajData(MainActivity.userid, calisma.get("BOLGE"), calisma.get("CALISMA"), calisma.get("FIRMA"), calisma.get("YETKILI"), calisma.get("URUN"), calisma.get("EKIP_LIDERI"), ntarih[2] + " / " + ntarih[1] + " / " + ntarih[0], calisma.get("FISNO"), "guncelleme");
+                                                MainActivity.gpd = new GunlukPuantajData(MainActivity.userid, calisma.get("BOLGE"), calisma.get("CALISMA"), calisma.get("FIRMA"), calisma.get("YETKILI"), calisma.get("URUN"), calisma.get("EKIP_LIDERI"),  (calisma.get("EL_BOLGEKISITI").equals("0")?0:1), ntarih[2] + " / " + ntarih[1] + " / " + ntarih[0], calisma.get("FISNO"), "guncelleme");
                                                 MainActivity.gpd.setEkliDoc(calisma.get("EKLIDOC1"), calisma.get("EKLIDOC2"), calisma.get("EKLIDOC3"), calisma.get("ACIKLAMA"));
 
                                                 ArrayList<HashMap<String, String>> res2 = db.getMultiResult(new String[]{"OID", "SICILNO", "TICID", "URUNID", "GOREV", "MESAI", "KARTLAEKLENDI"}, "tarim_istakip_calisma_personel", "AKTARILDI<1 AND AKTARILDI_ONAY=0 AND TICID='" + calisma.get("OID") + "' AND FISNO='"+ calisma.get("FISNO")+"'");

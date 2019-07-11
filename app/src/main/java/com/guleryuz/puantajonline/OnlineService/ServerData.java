@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.guleryuz.puantajonline.Connectivity;
 import com.guleryuz.puantajonline.KeyValueP;
+import com.guleryuz.puantajonline.MainActivity;
 import com.guleryuz.puantajonline.R;
 import com.guleryuz.puantajonline.ShowToast;
 import com.guleryuz.puantajonline.WebRequest;
@@ -79,7 +80,7 @@ public class ServerData {
         return data;
     }
 
-    public List<HashMap<String, String>> personelSorgula(String userid, String kartno, String sicilno, String ad, String soyad, String tckimlik){
+    public List<HashMap<String, String>> personelSorgula(String userid, String kartno, String sicilno, String ad, String soyad, String tckimlik, String ekiplideri, int ekipLideriBolgeKisiti){
         List<HashMap<String, String>> personelbilgileri = null;
         try {
             List<String[]> req = new ArrayList<String[]>();
@@ -106,6 +107,9 @@ public class ServerData {
             resp.add(new String[]{"EKIP_LIDERI", "ekip_lideri"});
             resp.add(new String[]{"EKIP_LIDERI2", "ekip_lideri2"});
             resp.add(new String[]{"EKIP_LIDERI3", "ekip_lideri3"});
+            resp.add(new String[]{"EKIP_LIDERIID", "ekip_lideriid"});
+            resp.add(new String[]{"EKIP_LIDERI2ID", "ekip_lideri2id"});
+            resp.add(new String[]{"EKIP_LIDERI3ID", "ekip_lideri3id"});
             resp.add(new String[]{"RESIM", "resim"});
             resp.add(new String[]{"KARTNO", "kartno"});
             resp.add(new String[]{"SGK_EVRAK", "sgk_evrak"});
@@ -115,6 +119,12 @@ public class ServerData {
             resp.add(new String[]{"ONAY", "onay"});
 
             personelbilgileri = this.getDataFromServer(userid, "PersonelBilgisiGetir", req, resp);
+            Log.w("s--->",""+ekipLideriBolgeKisiti+"-"+ekiplideri);
+            if (ekipLideriBolgeKisiti==1 && !(personelbilgileri.get(0).get("EKIP_LIDERIID").equals(ekiplideri) || personelbilgileri.get(0).get("EKIP_LIDERI2ID").equals(ekiplideri) || personelbilgileri.get(0).get("EKIP_LIDERI3ID").equals(ekiplideri)))
+            {
+                new ShowToast(MainActivity.mactivity, "Personel Yetki alanız dışındadır.");
+                personelbilgileri=null;
+            }
         }catch (Exception ex){
             Log.w("SDPersonel", ex.getStackTrace().toString());
         }

@@ -107,13 +107,16 @@ import org.json.JSONObject;
 * Date: 04.03.2019
 * Personel Sorgulamaya fotoğraf ekleme özelliği eklendi.
 * ------
+* 1.4
+* Date: 10.07.2019
+* Ekip Liderine göre bölge kısıtı eklendi.
 */
 
 public class MainActivity extends AppCompatActivity implements OnClickListener, TaskCallback, Handler.Callback, ServiceCallBack {
     //Klasör adları ve program versiyon ayarları bu kısımdan yapılır.
     //Her uygulama revizyonunda PROGRAM_VERSION değeri değiştirilmelidir.
     public final static String rootDir=".Guleryuz", attachDir=".Ekler", docDir=".Belgeler", sgkDir="SGK";
-    public final static String PROGRAM_VERSION="1.3";
+    public final static String PROGRAM_VERSION="1.4";
     private Connectivity conn;
 
     private ProgressDialog proDialog;
@@ -2536,7 +2539,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                         jsongorev += "{\"globalid\":\"" + MainActivity.gpd.getGlobalid() + "\",\"sicilno\":\"" + gperd.get(i).sicilno + "\",\"urunid\":\"" + gperd.get(i).urun + "\",\"gorev\":\"" + key + "\",\"mesai\":\"" + gperd.get(i).mesai + "\",\"kartokutma\":\"" + gperd.get(i).kartlaeklendi + "\",\"kartno\":\"" + gperd.get(i).kartno + "\",\"tc\":\"" + gperd.get(i).tc + "\",\"ad\":\"" + gperd.get(i).adi.replace(" "+gperd.get(i).soyadi,"") + "\",\"soyad\":\"" + gperd.get(i).soyadi + "\",\"cinsiyet\":\"" + gperd.get(i).cinsiyet + "\"},";
                     }
                 }
-                jsongorev = "["+jsongorev.substring(0,jsongorev.length()-1)+"]";
+                jsongorev = "["+(jsongorev.equals("")?"":jsongorev.substring(0,jsongorev.length()-1))+"]";
 
                 HashMap<String, String> params=new HashMap<String, String>();
                 params.put("token","6ce304f73ce841efaf1490bb98474eef");

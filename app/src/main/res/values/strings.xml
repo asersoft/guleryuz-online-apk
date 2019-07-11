@@ -124,7 +124,7 @@
     <string name="sdsyncpersonel">Personel Gönder</string>
     <string name="sdsync">Tüm Verileri Gönder</string>
 
-    <string name="serviceUrl">https://www.guleryuzcv.net/t_istakip/mobilsrv/vtysv7.php</string>
+    <string name="serviceUrl">https://www.guleryuzcv.net/t_istakip/mobilsrv/vtysv7_2.php</string>
     <string name="docUrl">"http://www.guleryuzcv.net/images2/img/15/evrak/"</string>
 
     <string name="msgInternetNoConnection">İnternet Bağlantınızı Kontrol Ediniz.</string>

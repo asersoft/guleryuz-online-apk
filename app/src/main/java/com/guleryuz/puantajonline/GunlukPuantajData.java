@@ -14,6 +14,7 @@ import java.util.List;
 public class GunlukPuantajData implements Serializable{
     private String globalid;
     private String userid, bolge, calismaalani, firma, yetkili, urun, ekiplideri, tarih, fisno, servispersonel;
+    private int ekiplideriBolgeKisiti;
     private HashMap<String,List<GunlukPersonelData>> gorevler;
     private HashMap<String,String> gorevMesai;
     private String gorevSelected, gorevIDSelected;
@@ -24,7 +25,7 @@ public class GunlukPuantajData implements Serializable{
     private String kayitdurumu;
 
 
-    public GunlukPuantajData(String userid, String bolge, String calismaalani, String firma, String yetkili, String urun, String ekiplideri, String tarih, String fisno, String durumu){
+    public GunlukPuantajData(String userid, String bolge, String calismaalani, String firma, String yetkili, String urun, String ekiplideri, int ekiplideriBolgeKisiti, String tarih, String fisno, String durumu){
         this.userid=userid;
         this.firma=firma;
         this.bolge=bolge;
@@ -32,6 +33,7 @@ public class GunlukPuantajData implements Serializable{
         this.yetkili=yetkili;
         this.urun=urun;
         this.ekiplideri=ekiplideri;
+        this.ekiplideriBolgeKisiti=ekiplideriBolgeKisiti;
         this.tarih=tarih;
         this.fisno=fisno;
         this.gorevler=new HashMap<String, List<GunlukPersonelData>>();
@@ -275,6 +277,10 @@ public class GunlukPuantajData implements Serializable{
 
     public String getEkiplideri(){
         return ekiplideri;
+    }
+
+    public int getEkiplideriBolgeKisiti(){
+        return ekiplideriBolgeKisiti;
     }
 
     public String getTarih(){

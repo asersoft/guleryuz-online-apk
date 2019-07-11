@@ -60,7 +60,7 @@ public class PersonelGoruntule extends AppCompatActivity implements View.OnClick
         if(intent.hasExtra("kartno")){
             //db=new Database(getApplicationContext());
             //HashMap<String, String> personelbilgileri = db.personelBilgileriGetir(intent.getStringExtra("kartno"),"","","");
-            List<HashMap<String, String>> personelbilgileri = new ServerData(this).personelSorgula(MainActivity.userid, intent.getStringExtra("kartno"), "","","","");
+            List<HashMap<String, String>> personelbilgileri = new ServerData(this).personelSorgula(MainActivity.userid, intent.getStringExtra("kartno"), "","","","",MainActivity.gpd.getEkiplideri(), MainActivity.gpd.getEkiplideriBolgeKisiti());
 
             if (personelbilgileri!=null && personelbilgileri.size() > 0) {
                 peKartno.setText((personelbilgileri.get(0).get("KARTNO").equals("0") ? "" : personelbilgileri.get(0).get("KARTNO")));

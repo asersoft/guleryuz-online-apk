@@ -386,6 +386,8 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
             i.putExtra("calismaalani", MainActivity.gpd.getCalismaalani());
             i.putExtra("firma", MainActivity.gpd.getFirma());
             i.putExtra("yetkili", MainActivity.gpd.getYetkili());
+            i.putExtra("ekiplideri", MainActivity.gpd.getEkiplideri());
+            i.putExtra("elbolgekisiti", MainActivity.gpd.getEkiplideriBolgeKisiti());
             startActivityForResult(i,REQUEST_GP2P);
         }else if (v.getId()== R.id.btnBarcode){
             try {
@@ -561,7 +563,7 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
                 Log.w("GunlukPuantaj2Urun", ex.getStackTrace().toString());
             }*/
 
-            List<HashMap<String, String>> personelbilgileri = new ServerData(this).personelSorgula(MainActivity.userid, scanContent,"","","","");
+            List<HashMap<String, String>> personelbilgileri = new ServerData(this).personelSorgula(MainActivity.userid, scanContent,"","","","", MainActivity.gpd.getEkiplideri(), MainActivity.gpd.getEkiplideriBolgeKisiti());
             if (personelbilgileri!=null && personelbilgileri.size() > 0) {
                 Log.w("puantaj", scanContent);
                 Intent intPersonel = new Intent(getApplicationContext(), PersonelGoruntule.class);
@@ -735,4 +737,5 @@ public class GunlukPuantaj2 extends AppCompatActivity implements View.OnClickLis
     }
 
 }
+
 

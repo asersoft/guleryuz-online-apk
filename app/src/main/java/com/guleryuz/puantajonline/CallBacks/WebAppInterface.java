@@ -74,6 +74,7 @@ public class WebAppInterface implements ServiceCallBack {
         resp.add(new String[]{"calisma","calisma"});
         resp.add(new String[]{"yetkili","yetkili"});
         resp.add(new String[]{"ekiplideri","ekiplideri"});
+        resp.add(new String[]{"bolgekisiti","bolgekisiti"});
         resp.add(new String[]{"calismavar","calismavar"});
         resp.add(new String[]{"servisvar","servisvar"});
         resp.add(new String[]{"aciklama","aciklama"});
@@ -99,7 +100,7 @@ public class WebAppInterface implements ServiceCallBack {
                         //String ibt = ntarih[2] + " / " + ntarih[1] + " / " + ntarih[0];
                         ibt=calisma.get(0).get("ibt");
                         //Log.w("tarih", ntarih[2] + " / " + ntarih[1] + " / " + ntarih[0]);
-                        MainActivity.gpd = new GunlukPuantajData(MainActivity.userid, calisma.get(0).get("bolge"), calisma.get(0).get("calisma"), calisma.get(0).get("firma"), calisma.get(0).get("yetkili"), calisma.get(0).get("urun"),  calisma.get(0).get("ekiplideri"), ibt,  fisno, "guncelleme");
+                        MainActivity.gpd = new GunlukPuantajData(MainActivity.userid, calisma.get(0).get("bolge"), calisma.get(0).get("calisma"), calisma.get(0).get("firma"), calisma.get(0).get("yetkili"), calisma.get(0).get("urun"),  calisma.get(0).get("ekiplideri"), (calisma.get(0).get("bolgekisiti").equals("0")?0:1), ibt,  fisno, "guncelleme");
                         MainActivity.gpd.setGlobalid(globalid);
                         MainActivity.gpd.setFisno(fisno);
 

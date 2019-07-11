@@ -46,6 +46,8 @@ public class GunlukPuantaj2Personel extends AppCompatActivity implements View.On
     private static String activeButton;
     private static boolean sorgulamaYapildi=false;
     public String SGK_Evrak;
+    private String ekiplideri;
+    private int ekiplideriBolgeKisiti;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,14 @@ public class GunlukPuantaj2Personel extends AppCompatActivity implements View.On
         ParentCtxt = this;
         mactivity=this;
 
-        Intent intent =getIntent();
+        //Intent intent =getIntent();
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            ekiplideri = extras.getString("ekiplideri");
+            ekiplideriBolgeKisiti = extras.getInt("elbolgekisiti");
+        }
+
         sorgulamaYapildi=false;
         personelSorgulama=(TextView)findViewById(R.id.personelSorgulama);
         personelSorgulama.setText("Personel Görev Ekle");
@@ -138,7 +147,7 @@ public class GunlukPuantaj2Personel extends AppCompatActivity implements View.On
                     }
 
                     //HashMap<String, String> personelbilgileri = db.personelBilgileriGetir(kartnowithpad, psBarkod.getText().toString(), psTC.getText().toString(), "", psAd.getText().toString(), psSoyad.getText().toString());
-                    List<HashMap<String, String>> personelbilgileri = new ServerData(this).personelSorgula(MainActivity.userid, kartnowithpad, psBarkod.getText().toString(),psAd.getText().toString(),psSoyad.getText().toString(),psTC.getText().toString());
+                    List<HashMap<String, String>> personelbilgileri = new ServerData(this).personelSorgula(MainActivity.userid, kartnowithpad, psBarkod.getText().toString(),psAd.getText().toString(),psSoyad.getText().toString(),psTC.getText().toString(), ekiplideri, ekiplideriBolgeKisiti);
 
                     if (personelbilgileri!=null && personelbilgileri.size() > 0) {
                         sorgulamaYapildi=true;
@@ -282,7 +291,7 @@ public class GunlukPuantaj2Personel extends AppCompatActivity implements View.On
                     //db = new Database(getApplicationContext());
                     //Log.w("onActivityResult", scanContent+" "+userid);
                     //if (db.barkodDogrula(scanContent, MainActivity.userid)) {
-                    List<HashMap<String, String>> personelbilgileri = new ServerData(this).personelSorgula(MainActivity.userid, scanContent, "","","","");
+                    List<HashMap<String, String>> personelbilgileri = new ServerData(this).personelSorgula(MainActivity.userid, scanContent, "","","","", ekiplideri, ekiplideriBolgeKisiti);
                     if (personelbilgileri!=null) {
                         //HashMap<String, String> personelbilgileri = db.personelBilgileriGetir(scanContent);
                         if ( personelbilgileri.size() > 0) {
@@ -356,7 +365,7 @@ public class GunlukPuantaj2Personel extends AppCompatActivity implements View.On
                 } else if (activeButton.equals("imgChangeKartno")) {
                     if(scanContent!=null) {
                         ServerData sd=new ServerData(this);
-                        List<HashMap<String, String>> kartno= sd.personelSorgula(MainActivity.userid,scanContent, "","","","");
+                        List<HashMap<String, String>> kartno= sd.personelSorgula(MainActivity.userid,scanContent, "","","","", ekiplideri, ekiplideriBolgeKisiti);
 
                         //HashMap<String, String> kartno = db.getOneRow(new String[]{"ID", "AD", "SOYAD"}, "tarim_istakip_personel", "kartno='" + scanContent + "'");
                         if (kartno==null || kartno.size() == 0) {

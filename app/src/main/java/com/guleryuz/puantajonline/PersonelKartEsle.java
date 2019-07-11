@@ -71,7 +71,7 @@ public class PersonelKartEsle extends AppCompatActivity implements View.OnClickL
             //db=new Database(getApplicationContext());
             //HashMap<String, String> personelbilgileri = db.personelBilgileriGetir("", psbarkod.getText().toString(), pstc.getText().toString(), "");
             ServerData sd =new ServerData(ParentCtxt);
-            List<HashMap<String, String>> personelbilgileri = sd.personelSorgula(userid,"",psbarkod.getText().toString(),"","",pstc.getText().toString());
+            List<HashMap<String, String>> personelbilgileri = sd.personelSorgula(userid,"",psbarkod.getText().toString(),"","",pstc.getText().toString(), MainActivity.gpd.getEkiplideri(), MainActivity.gpd.getEkiplideriBolgeKisiti());
             if(personelbilgileri!=null && personelbilgileri.size()>0) {
                 psbarkod.setText(personelbilgileri.get(0).get("ID"));
                 pstc.setText(personelbilgileri.get(0).get("TC"));

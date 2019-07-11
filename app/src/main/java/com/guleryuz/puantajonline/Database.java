@@ -228,6 +228,7 @@ public class Database extends SQLiteOpenHelper{
                 +  "CALISMA TEXT,"
                 +  "FISNO TEXT,"
                 +  "EKIP_LIDERI TEXT,"
+                +  "EL_BOLGEKISITI TEXT,"
                 +  "URUN TEXT,"
                 +  "YETKILI TEXT,"
                 +  "SERVISVAR INTEGER,"
