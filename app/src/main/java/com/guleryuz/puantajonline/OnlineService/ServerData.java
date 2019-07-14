@@ -122,7 +122,7 @@ public class ServerData {
             Log.w("s--->",""+ekipLideriBolgeKisiti+"-"+ekiplideri);
             if (ekipLideriBolgeKisiti==1 && !(personelbilgileri.get(0).get("EKIP_LIDERIID").equals(ekiplideri) || personelbilgileri.get(0).get("EKIP_LIDERI2ID").equals(ekiplideri) || personelbilgileri.get(0).get("EKIP_LIDERI3ID").equals(ekiplideri)))
             {
-                new ShowToast(MainActivity.mactivity, "Personel Yetki alanız dışındadır.");
+                new ShowToast(MainActivity.mactivity, "Personel Yetki alanınız dışındadır.");
                 personelbilgileri=null;
             }
         }catch (Exception ex){
